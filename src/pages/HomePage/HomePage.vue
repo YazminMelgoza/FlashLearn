@@ -65,8 +65,8 @@ export default defineComponent({
 });
 </script>
 <template>
-  <main class ="w-full">
-    <navbar class ="flex h-full w-1/6 flex-col">
+  <main class ="w-1/6">
+    <navbar class ="flex h-full w-full flex-col">
 		<logo class = "flex h-1/6 justify-center items-center w-full"> <img src="src/assets/logo.jpeg" width = "250" height="100">
  </logo>
 			<inicio class = "navbarcomponente">

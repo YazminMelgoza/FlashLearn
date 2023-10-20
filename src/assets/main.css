@@ -14,3 +14,6 @@
         @apply w-2/5 flex font-semibold justify-start items-start text-2xl
     }
 }
+body {
+    background-color:'#FFFFFF';
+}

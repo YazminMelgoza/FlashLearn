@@ -10,9 +10,10 @@ module.exports = {
       },
       colors: {
         primary: {
-          'fondo':'#F5F5F5',
+          'fondo':'#FFFFFF',
           'seleccionado': '#003B8C',
           'noseleccionado': '#ABABAB',
+          'bloques': '#F5F7FF',
           '100': '#F2FFFF',
           '200': '#D8FEFB',
           '300': '#BAF8EF',
