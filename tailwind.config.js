@@ -10,6 +10,9 @@ module.exports = {
       },
       colors: {
         primary: {
+          'fondo':'#F5F5F5',
+          'seleccionado': '#003B8C',
+          'noseleccionado': '#ABABAB',
           '100': '#F2FFFF',
           '200': '#D8FEFB',
           '300': '#BAF8EF',

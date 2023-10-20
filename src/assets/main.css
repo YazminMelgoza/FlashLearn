@@ -3,3 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .navbarcomponente {
+        @apply flex h-1/6 w-full flex-row justify-center items-center
+    }
+    .navbarcomponenteicono {
+        @apply w-1/5 flex items-center justify-center
+    }
+    .navbarcomponentetexto {
+        @apply w-2/5 flex font-semibold justify-start items-start text-2xl
+    }
+}
