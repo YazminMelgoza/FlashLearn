@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
+    
     './src/**/*.{html,ts,vue}'
   ],
   theme: {
@@ -8,12 +9,14 @@ module.exports = {
       fontFamily: {
         'sans': ['Poppins', 'sans-serif']
       },
+
       colors: {
         primary: {
           'fondo':'#FFFFFF',
           'seleccionado': '#003B8C',
           'noseleccionado': '#ABABAB',
           'bloques': '#F5F7FF',
+          'botonañadir': '#240A8F',
           '100': '#003050',
           '200': '#D8FEFB',
           '300': '#BAF8EF',

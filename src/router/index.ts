@@ -8,14 +8,27 @@ const router = createRouter({
     {
       path: '/',
       name: 'inicio',
-      component: () => import('../pages/HomePage/HomePage.vue')
+      component: () => import('../pages/HomePage/InicioFL.vue')
+  },
+    {
+      path: '/flashcards',
+      name: 'flashcards',
+      component: () => import('../pages/HomePage/Flashcards.vue'),
+
+    }
+    ,
+    {
+      path: '/inicio',
+      name: 'inicio',
+      component: () => import('../pages/HomePage/InicioFL.vue'),
+
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name) {
-    // Si la ruta tiene un nombre, actualiza la variable paginaActiva
+  if (to.name && typeof to.name === 'string') {
+    // Si la ruta tiene un nombre y es una cadena de texto, actualiza la variable paginaActiva
     paginaActiva = to.name; // Actualiza la variable directamente
   }
   next()

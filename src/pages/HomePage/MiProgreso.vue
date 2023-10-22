@@ -1,6 +1,6 @@
 <template>
     <div class="w-3/5 flex flex-col ">
-        <miprogreso class =" flex ml-auto mr-auto w-11/12 h-11/12 rounded-2xl bg-primary-bloques  h-full flex-col ">
+        <miprogreso class =" flex ml-auto mr-auto w-11/12 h-full rounded-2xl bg-primary-bloques flex-col ">
 				<headermiprogreso class= " w-11/12 h-1/6 flex flex-row items-center justify-center">
 					<titulodemiprogreso class ="font-bold w-11/12 flex h-1/6 text-3xl font-sans-Poppins justify-normal items-center text-start mt-5">
 						Mi progreso
