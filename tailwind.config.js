@@ -14,7 +14,7 @@ module.exports = {
           'seleccionado': '#003B8C',
           'noseleccionado': '#ABABAB',
           'bloques': '#F5F7FF',
-          '100': '#F2FFFF',
+          '100': '#003050',
           '200': '#D8FEFB',
           '300': '#BAF8EF',
           '400': '#96E6D7',

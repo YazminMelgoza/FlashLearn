@@ -3,6 +3,7 @@ import { RouterView } from 'vue-router'
 import HomePage from './pages/HomePage/HomePage.vue';
 import HeaderTop from './pages/HomePage/HeaderTop.vue';
 import SetReciente from './pages/HomePage/SetReciente.vue';
+import MiProgreso from './pages/HomePage/MiProgreso.vue';
 </script>
 
 <template>
@@ -11,9 +12,11 @@ import SetReciente from './pages/HomePage/SetReciente.vue';
     <RouterView />
     <div class ="flex flex-col w-full mt-10">
       <HeaderTop />
-      <div class = ""></div>
+      <div class = "flex flex-row"> 
       <SetReciente />
-    </div>
+      <MiProgreso />
+      </div>
+      </div>
   </div>
 </template>
 
