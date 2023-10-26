@@ -22,6 +22,16 @@ const router = createRouter({
       name: 'inicio',
       component: () => import('../pages/HomePage/InicioFL.vue'),
 
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../pages/LoginPage/LoginPage.vue'),
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('../pages/RegisterPage/RegisterPage.vue'),
     }
   ]
 })
