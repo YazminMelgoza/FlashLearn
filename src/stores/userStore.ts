@@ -5,13 +5,8 @@ export const useUserStore = defineStore('user', {
   state: () => {
     return {
       name: ref(''),
-      email: ref('')
+      email: ref(''),
+      points: ref(0)
     }
   }
 })
-
-
-interface UserInfo {
-  name: string;
-  email: string;
-}

@@ -24,6 +24,7 @@ async function login() {
         // Cargar usuario al estado actual
         userStore.name = doc.data().username
         userStore.email = doc.data().email
+        userStore.points = doc.data().points
       }
     })
     router.push('/inicio')

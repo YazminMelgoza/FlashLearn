@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class ="flex flex-col w-full h-full mt-10">
+        <div class ="flex flex-col h-full mt-10">
             <HeaderTop/>
-        <div class = "flex flex-row h-full mb-5"> 
-            <SetReciente />
-            <MiProgreso />
-      </div>
-      </div>
+            <div class = "flex flex-row h-full mb-5">
+              <SetReciente />
+              <MiProgreso />
+            </div>
+        </div>
     </div>
 </template>
 

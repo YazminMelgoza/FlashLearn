@@ -48,9 +48,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class ="w-1/6">
-    <navbar class ="flex h-full w-full flex-col">
-		<logo class = "flex h-1/6 justify-center items-center w-full ml-3"> <img src="src/assets/logo.png" width = "250" height="100">
+  <main class ="w-[15rem]">
+    <navbar class ="flex h-full w-full justify-center items-center flex-col">
+		<logo class = "w-[75%]"> <img src="src/assets/logo.png" width = "250" height="100">
  </logo>
         <inicio class = "navbarcomponente">
         <router-link to="inicio" class ="navbarcomponente">
@@ -59,7 +59,7 @@ export default defineComponent({
         <path :class = "$route.name === 'inicio' ? 'fill-primary-seleccionado' : 'fill-primary-noseleccionado'" fill-rule="evenodd" clip-rule="evenodd" d="M1.29627 9.11688C0.533966 10.7078 0.802183 12.5698 1.33862 16.2924L1.73106 19.0268C2.41854 23.8095 2.76299 26.1995 4.4217 27.6281C6.0804 29.0567 8.51271 29.0567 13.3787 29.0567H16.5013C21.3673 29.0567 23.7996 29.0567 25.4584 27.6281C27.1171 26.1995 27.4615 23.8095 28.149 19.0268L28.5428 16.2924C29.0793 12.5698 29.3475 10.7078 28.5838 9.11688C27.8215 7.52593 26.1967 6.55752 22.9484 4.62354L20.9933 3.45892C18.0457 1.70139 16.5691 0.823334 14.94 0.823334C13.311 0.823334 11.8358 1.70139 8.8868 3.45892L6.93164 4.62354C3.68481 6.55752 2.05998 7.52593 1.29627 9.11688ZM9.64627 23.41C9.64627 23.1292 9.75782 22.8599 9.95638 22.6614C10.1549 22.4628 10.4242 22.3512 10.705 22.3512H19.175C19.4558 22.3512 19.7251 22.4628 19.9237 22.6614C20.1222 22.8599 20.2338 23.1292 20.2338 23.41C20.2338 23.6908 20.1222 23.9601 19.9237 24.1586C19.7251 24.3572 19.4558 24.4688 19.175 24.4688H10.705C10.4242 24.4688 10.1549 24.3572 9.95638 24.1586C9.75782 23.9601 9.64627 23.6908 9.64627 23.41Z" :fill="icolorSVG" />
         </svg>
 				</iconodeinicio > 
-        <iniciotexto class="flex navbarcomponentetexto font-sans-Poppins"
+        <iniciotexto class="flex navbarcomponentetexto text-lg"
           :class= "$route.name === 'inicio' ? 'text-primary-seleccionado' : 'text-primary-noseleccionado'"
         >
           Inicio
@@ -73,14 +73,14 @@ export default defineComponent({
           <path :class ="$route.name === 'flashcards' ? 'fill-primary-seleccionado' : 'fill-primary-noseleccionado'" d="M15.7954 3.17603C15.4284 3.17603 15.0614 3.26072 14.7085 3.38776L4.31936 7.69303C3.62877 7.97583 3.07875 8.5213 2.79023 9.20952C2.50171 9.89774 2.4983 10.6724 2.78076 11.3631L9.78212 28.2313C9.98892 28.7429 10.3411 29.1827 10.7952 29.4963C11.2493 29.8099 11.7853 29.9835 12.337 29.9958C12.7041 29.9958 13.0852 29.9534 13.4522 29.784L23.8554 25.4787C24.3575 25.2657 24.788 24.913 25.0957 24.4627C25.4035 24.0123 25.5756 23.4831 25.5916 22.9379C25.6058 22.585 25.5352 22.1757 25.4081 21.8087L18.3503 4.94048C18.1508 4.42388 17.8004 3.97929 17.3447 3.66459C16.889 3.34989 16.3492 3.17965 15.7954 3.17603ZM20.7076 3.17603L25.5775 14.9626V5.99915C25.5775 5.25041 25.2801 4.53234 24.7506 4.0029C24.2212 3.47346 23.5031 3.17603 22.7544 3.17603M28.4148 5.34983V18.0963L31.8449 9.82449C31.9855 9.48257 32.0572 9.11624 32.056 8.74652C32.0547 8.37681 31.9805 8.01098 31.8376 7.67001C31.6946 7.32904 31.4858 7.01965 31.223 6.75957C30.9602 6.49949 30.6487 6.29385 30.3063 6.15443M15.7954 5.95681L22.825 22.9238L12.3935 27.2432L5.36392 10.2903" :fill="fcolorSVG"/>
           </svg>
         </iconodeflashcard>
-				<flashcardtexto class ="navbarcomponentetexto font-sans-Poppins"
+				<flashcardtexto class ="navbarcomponentetexto font-sans-Poppins text-lg"
         :class= "$route.name === 'flashcards' ? 'text-primary-seleccionado' : 'text-primary-noseleccionado'"
         > Flashcard
 				</flashcardtexto>		
       </router-link>
 			</flashcards>
 
-<quizzes class = "navbarcomponente">
+      <quizzes class = "navbarcomponente">
         <router-link to="quizzes" class="navbarcomponente">
 				<iconodequiz  class = "navbarcomponenteicono">
           <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +90,7 @@ export default defineComponent({
           </svg>
 
 				</iconodequiz>
-				<textodequiz class ="navbarcomponentetexto font-sans-Poppins"
+				<textodequiz class ="navbarcomponentetexto font-sans-Poppins text-lg"
         :class= "$route.name === 'quizzes' ? 'text-primary-seleccionado' : 'text-primary-noseleccionado'"        
         > Quizzes
 				</textodequiz>
@@ -111,7 +111,7 @@ export default defineComponent({
           </defs>
           </svg>
 				</iconodeflashcard>
-				<textocreaciondefc class ="navbarcomponentetexto font-sans-Poppins"
+				<textocreaciondefc class ="navbarcomponentetexto font-sans-Poppins text-lg"
         :class= "$route.name === 'crearfc' ? 'text-primary-seleccionado' : 'text-primary-noseleccionado'"
         > Crear <br> Flashcards
 				</textocreaciondefc>

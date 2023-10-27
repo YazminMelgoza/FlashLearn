@@ -30,7 +30,8 @@ async function register() {
     await addDoc(collection(db, 'users'), {
       email: userCredential.user.email,
       uid: userCredential.user.uid,
-      username: username.value
+      username: username.value,
+      points: 0
     })
     // load user to current state
     userStore.name = username.value
@@ -51,7 +52,7 @@ async function register() {
 </script>
 
 <template>
-  <div class="text-center mx-auto">
+  <div class="text-center ml-[15rem] mx-auto">
     <div class="header">
       <img class="logo mx-auto" src="../../assets/LOGOTIPOV2.jpg" alt="Logotipo de Mi Sitio Web">
       <h1 class="font-bold text-3xl text-accent-900">Flashlearn</h1>
