@@ -1,7 +1,7 @@
 <template>
 	<div class = "w-full h-1/5">
 	  <header class =" inline-flex w-full flex-row align-middle justify-start items-center">
-			<saludo class ="flex w-1/2 h-1/2 mr-auto font-sans-Popping text-3xl flex-col justify-start items-start ml-20 font-bold text-black-900" > Buenos dias usuario!
+			<saludo class ="flex w-1/2 h-1/2 mr-auto font-sans-Popping text-3xl flex-col justify-start items-start ml-20 font-bold text-black-900" > Buenos dias {{username}}!
 			  <subtitulo class ="flex mt-auto h-1/12 w-4/5 text-xl font-semibold text-primary-seleccionado justify-start mb-auto "> Llevas 365 dias consecutivos aprendiendo</subtitulo>
 			</saludo>
 			<datosusuario class ="flex flex-row w-1/3 h-auto right-auto justify-end">
@@ -12,7 +12,7 @@
 				500 puntos</puntajedeusuario>
 			  <usuario class =" flex flex-row w-1/2 h-auto font-semibold right:auto">
 				<iconodeusuario class="w-16 h-16 rounded-full bg-blue-500"> </iconodeusuario>
-				<nombredeusuario class = "w-2/3 h-full text-lg text-primary-seleccionado flex justify-start items-center ml-3 "> Usuario</nombredeusuario>
+				<nombredeusuario class = "w-2/3 h-full text-lg text-primary-seleccionado flex justify-start items-center ml-3 "> {{ username }}</nombredeusuario>
 				<niveldeusuario> </niveldeusuario>
 			  </usuario>
 			</datosusuario>
@@ -21,6 +21,10 @@
   </template>
 
 <script setup lang="ts">
+import {useUserStore} from "@/stores/userStore";
+
+const userStore = useUserStore();
+const username = userStore.name;
 
 </script>
 

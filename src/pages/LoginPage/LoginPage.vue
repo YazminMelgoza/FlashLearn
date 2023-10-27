@@ -4,6 +4,9 @@ import { RouterLink } from 'vue-router'
 import { auth } from '@/services/firebase'
 import router from '@/router'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import {useUserStore} from "@/stores/userStore";
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '@/services/firebase'
 
 const email = ref('')
 const password = ref('')
@@ -14,7 +17,15 @@ async function login() {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
     const user = userCredential.user
-    alert(`Bienvenido ${user.email}`)
+    const querySnapshot = await getDocs(collection(db, 'users'))
+    querySnapshot.forEach((doc) => {
+      if (doc.data().uid === user.uid) {
+        const userStore = useUserStore()
+        // Cargar usuario al estado actual
+        userStore.name = doc.data().username
+        userStore.email = doc.data().email
+      }
+    })
     router.push('/inicio')
   } catch (error) {
     alert(error.message)

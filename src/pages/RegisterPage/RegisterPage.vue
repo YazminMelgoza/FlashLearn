@@ -4,16 +4,21 @@ import { RouterLink } from 'vue-router'
 import { auth } from '@/services/firebase'
 import router from '@/router'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '@/services/firebase'
+import { useUserStore } from '@/stores/userStore'
 
 const email = ref('')
 const password = ref('')
 const afterRegisterClick = ref(false)
 const errorMessage = ref('')
+const username = ref('')
 
 function hasEmptyValues() {
   return email.value === '' || password.value === ''
 }
 
+const userStore = useUserStore()
 async function register() {
   afterRegisterClick.value = true
   if (hasEmptyValues()) {
@@ -21,9 +26,21 @@ async function register() {
   }
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+    // Add user to Firestore
+    await addDoc(collection(db, 'users'), {
+      email: userCredential.user.email,
+      uid: userCredential.user.uid,
+      username: username.value
+    })
+    // load user to current state
+    userStore.name = username.value
+    userStore.email = email.value
+    console.log('usuario registrado')
     const user = userCredential.user
     alert(`Bienvenido ${user.email}`)
     router.push('/inicio')
+
+
   } catch (error) {
     errorMessage.value = error.message
     // delete Firebase: Error from errorMessage
@@ -40,6 +57,13 @@ async function register() {
       <h1 class="font-bold text-3xl text-accent-900">Flashlearn</h1>
     </div>
     <div class="form">
+      <label for="username">Nombre de usuario</label>
+      <input
+          required
+          :class="username=='' && afterRegisterClick ? 'border-2 bg-red-100 border-red-600' : ''"
+          v-model="username"
+          type="text"
+          id="username" name="username">
 
       <label for="email">Correo Electrónico:</label>
       <input
@@ -58,8 +82,13 @@ async function register() {
       <button
           @click="register"
           class="w-full mb-2"
-          type="submit">Registrarse con Correo Electronico</button>
-      <button class="block bg-white w-full rounded-lg py-3">Registrarse con Google</button>
+          type="submit">
+        Registrarse con Correo Electronico
+      </button>
+      <button
+          class="block bg-white w-full rounded-lg py-3">
+        Registrarse con Google
+      </button>
     </div>
     <p>Ya tienes una cuenta?
       <RouterLink to="/login">Inicia sesión aquí</RouterLink>
@@ -68,7 +97,6 @@ async function register() {
 </template>
 
 <style scoped>
-
 h2 {
   color: #000;
   padding: 20px 0;
