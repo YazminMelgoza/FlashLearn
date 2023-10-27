@@ -1,4 +1,35 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import { auth } from '@/services/firebase'
+import router from '@/router'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+
+const email = ref('')
+const password = ref('')
+const afterRegisterClick = ref(false)
+const errorMessage = ref('')
+
+function hasEmptyValues() {
+  return email.value === '' || password.value === ''
+}
+
+async function register() {
+  afterRegisterClick.value = true
+  if (hasEmptyValues()) {
+    return
+  }
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+    const user = userCredential.user
+    alert(`Bienvenido ${user.email}`)
+    router.push('/inicio')
+  } catch (error) {
+    errorMessage.value = error.message
+    // delete Firebase: Error from errorMessage
+    errorMessage.value = errorMessage.value.replace('Firebase: Error', '')
+  }
+}
 
 </script>
 
@@ -6,15 +37,30 @@
   <div class="text-center mx-auto">
     <div class="header">
       <img class="logo mx-auto" src="../../assets/LOGOTIPOV2.jpg" alt="Logotipo de Mi Sitio Web">
-      <h2>Registro</h2>
+      <h1 class="font-bold text-3xl text-accent-900">Flashlearn</h1>
     </div>
-    <form>
-      <label for="username">Nombre de usuario:</label>
-      <input type="text" id="username" name="username">
+    <div class="form">
+
+      <label for="email">Correo Electrónico:</label>
+      <input
+          required
+          :class="email=='' && afterRegisterClick ? 'border-2 bg-red-100 border-red-600' : ''"
+          v-model="email"
+          type="text"
+          id="email" name="email">
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password">
-      <input type="submit" value="Registrarse">
-    </form>
+      <input required
+             :class="password=='' && afterRegisterClick ? 'border-2 bg-red-100 border-red-600' : ''"
+             v-model="password" type="password" id="password" name="password">
+      <div class="h-10 flex items-center justify-center">
+        <p class="text-red-600 text-sm" v-if="errorMessage">Hubo un error: {{ errorMessage }}</p>
+      </div>
+      <button
+          @click="register"
+          class="w-full mb-2"
+          type="submit">Registrarse con Correo Electronico</button>
+      <button class="block bg-white w-full rounded-lg py-3">Registrarse con Google</button>
+    </div>
     <p>Ya tienes una cuenta?
       <RouterLink to="/login">Inicia sesión aquí</RouterLink>
     </p>
@@ -27,7 +73,7 @@ h2 {
   color: #000;
   padding: 20px 0;
 }
-form {
+div.form {
   background-color: #dac0fe;
   width: 400px;
   margin: 0 auto;
@@ -39,26 +85,19 @@ label {
   display: block;
   margin-top: 10px;
 }
-input[type="text"],
-input[type="password"] {
-  width: 90%;
-  padding: 10px;
+input {
   margin: 5px 0;
-  border: 1px solid #7D51DF;
   border-radius: 5px;
+  @apply w-full p-2 my-1 border;
 }
-input[type="submit"] {
+
+button[type="submit"]  {
   background-color: #10026c;
   color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
 }
 
 .header {
@@ -68,7 +107,6 @@ body {
 
 .logo {
   width: 150px; /* Tamaño del logotipo */
-  height: auto;
 }
 
 h2 {

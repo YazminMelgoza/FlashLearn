@@ -1,4 +1,26 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import { auth } from '@/services/firebase'
+import router from '@/router'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+
+const email = ref('')
+const password = ref('')
+const error = ref('')
+const afterLoginClick = ref(false)
+async function login() {
+  afterLoginClick.value = true
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
+    const user = userCredential.user
+    alert(`Bienvenido ${user.email}`)
+    router.push('/inicio')
+  } catch (error) {
+    alert(error.message)
+    error.value = error.message
+  }
+}
 
 </script>
 
@@ -7,12 +29,22 @@
   <div class="login-container text-center">
     <div class="header">
       <img class="logo mx-auto" src="../../assets/LOGOTIPOV2.jpg" alt="Logotipo de Mi Sitio Web">
-      <h2>Inicio de sesion</h2>
+      <h1 class="font-bold text-3xl text-accent-900">Flashlearn</h1>
     </div>
-    <form id="login-form">
-      <input type="text" id="username" placeholder="Nombre de usuario">
-      <input type="password" id="password" placeholder="Contraseña">
-      <input type="submit" value="Iniciar sesión">
+    <form @submit.prevent id="login-form">
+      <input
+          v-model="email"
+          type="text" id="email"
+          :class="email=='' && afterLoginClick ? 'border-2 bg-red-100 border-red-600' : ''"
+          placeholder="Correo electronico">
+      <input
+          v-model="password"
+          :class="password=='' && afterLoginClick ? 'border-2 bg-red-100 border-red-600' : ''"
+          type="password"
+          id="password"
+          placeholder="Contraseña">
+      <p> {{error}} </p>
+      <input @click="login" type="submit" value="Iniciar sesión">
     </form>
     <p class="mt-4">¿No tienes una cuenta?
     </p>
@@ -39,8 +71,8 @@ body {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #7D51DF;
   background-color: #dac0fe;
+  @apply border
 }
 input[type="submit"] {
   background-color: #10026c;
