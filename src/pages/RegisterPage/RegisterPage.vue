@@ -26,6 +26,10 @@ async function register() {
   }
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+    // load user to current state
+    userStore.name = username.value
+    userStore.email = email.value
+    router.push('/inicio')
     // Add user to Firestore
     await addDoc(collection(db, 'users'), {
       email: userCredential.user.email,
@@ -33,13 +37,6 @@ async function register() {
       username: username.value,
       points: 0
     })
-    // load user to current state
-    userStore.name = username.value
-    userStore.email = email.value
-    console.log('usuario registrado')
-    const user = userCredential.user
-    alert(`Bienvenido ${user.email}`)
-    router.push('/inicio')
   } catch (error) {
     errorMessage.value = error.message
     // delete Firebase: Error from errorMessage

@@ -23,22 +23,23 @@ async function login() {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
     const user = userCredential.user
     // Buscar usuario en Firestore
+    // push after store is updated
     const querySnapshot = await getDocs(collection(db, 'users'))
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach( (doc) => {
       console.log(doc.data());
       console.log(user)
-      if (doc.data().uid === user.uid) {
+      const userData = doc.data()
+      if (userData.uid === user.uid) {
         const userStore = useUserStore()
         // Cargar usuario al estado actual
-        userStore.name = doc.data().username
-        userStore.email = doc.data().email
-        userStore.points = doc.data().points
+        userStore.name = userData.username
+        userStore.email = userData.email
+        userStore.points = userData.points
       }
     })
-
-    // esperar a que cargue el estado
-    await new Promise((resolve) => setTimeout(resolve, 1000))
     router.push('/inicio')
+
+
   } catch (error) {
     if (error.message) {
       errorMessage.value = error.message

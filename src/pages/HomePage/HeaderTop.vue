@@ -47,9 +47,16 @@
 
 <script setup lang="ts">
 import { useUserStore } from '@/stores/userStore'
-
+import { onMounted } from 'vue'
 const userStore = useUserStore()
-const username = userStore.name
+import { ref } from 'vue'
+const username = ref('')
+
+onMounted( () => {
+  console.log('HeaderTop mounted')
+  username.value = userStore.name
+})
+
 </script>
 
 <style scoped></style>
