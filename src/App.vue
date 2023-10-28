@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import HomePage from './pages/HomePage/HomePage.vue'
+import HomePage from './components/NavigationBar.vue'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './services/firebase'
 import { ref } from 'vue'
@@ -14,7 +14,6 @@ const isLogged = ref(false)
 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
-    alert(user)
     router.push('/login')
     isLogged.value = false
   } else {

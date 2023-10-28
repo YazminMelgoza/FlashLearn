@@ -1,8 +1,8 @@
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 // firebase logout import
-import router from '@/router'
+import router from './../router'
 import { useUserStore } from '@/stores/userStore'
 import { getAuth, signOut } from "firebase/auth";
 
@@ -15,21 +15,19 @@ function logoutFromFirebase() {
     const userStore = useUserStore()
     userStore.name = ''
     userStore.email = ''
-    alert('Sesión cerrada')
+    router.push('/login')
   }).catch((error) => {
     // An error happened.
     alert('Error al cerrar sesión')
   });
 }
 
-export default defineComponent({
-  setup() {
-    const route = useRoute() // Obtén la información de la ruta
+const route = useRoute() // Obtén la información de la ruta
 
-    let cfcolorSVG = '#ABABAB' // Color predeterminado
-    let qcolorSVG = '#ABABAB' // Color predeterminado
-    let fcolorSVG = '#ABABAB' // Color predeterminado
-    let icolorSVG = '#ABABAB' // Color predeterminado
+let cfcolorSVG = ref('#ABABAB') // Color predeterminado
+let qcolorSVG = ref('#ABABAB') // Color predeterminado
+let fcolorSVG = ref('#ABABAB') // Color predeterminado
+let icolorSVG = ref('#ABABAB') // Color predeterminado
 
     watch(
       () => route.name,
@@ -37,44 +35,36 @@ export default defineComponent({
         console.log('Nueva página activa:', to)
 
         if (to === 'crearfc') {
-          cfcolorSVG = '#003B8C'
+          cfcolorSVG.value = '#003B8C'
         } else {
-          cfcolorSVG = '#ABABAB'
+          cfcolorSVG.value = '#ABABAB'
         }
         if (to === 'quizzes') {
-          qcolorSVG = '#003B8C'
+          qcolorSVG.value = '#003B8C'
         } else {
-          qcolorSVG = '#ABABAB'
+          qcolorSVG.value = '#ABABAB'
         }
         if (to === 'inicio') {
-          icolorSVG = '#003B8C'
+          icolorSVG.value = '#003B8C'
         } else {
-          icolorSVG = '#ABABAB'
+          icolorSVG.value = '#ABABAB'
         }
         if (to === 'flashcards') {
-          fcolorSVG = '#003B8C'
+          fcolorSVG.value = '#003B8C'
         } else {
-          fcolorSVG = '#ABABAB'
+          fcolorSVG.value= '#ABABAB'
         }
-        console.log(icolorSVG)
       }
     )
-
-    return {
-      icolorSVG,
-      qcolorSVG,
-      cfcolorSVG,
-      fcolorSVG
-    }
-  }
-})
 </script>
 
 <template>
     <navbar class="flex h-full w-[15rem] justify-center items-center flex-col shadow-xl">
-      <logo class="w-[75%]"> <img src="src/assets/logo.png" width="250" height="100" /> </logo>
+      <logo class="w-[75%]"> <img src="../assets/logo.png" width="250" height="100" /> </logo>
+      <div class="w-full mt-10">
+
       <inicio class="navbarcomponente">
-        <router-link to="inicio" class="navbarcomponente">
+        <router-link to="inicio" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
           <iconodeinicio class="navbarcomponenteicono">
             <svg
               width="40"
@@ -107,7 +97,7 @@ export default defineComponent({
         </router-link>
       </inicio>
       <flashcards class="navbarcomponente">
-        <router-link to="flashcards" class="navbarcomponente">
+        <router-link to="flashcards" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
           <iconodeflashcard class="navbarcomponenteicono">
             <svg
               width="40"
@@ -141,7 +131,7 @@ export default defineComponent({
       </flashcards>
 
       <quizzes class="navbarcomponente">
-        <router-link to="quizzes" class="navbarcomponente">
+        <router-link to="quizzes" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
           <iconodequiz class="navbarcomponenteicono">
             <svg
               width="34"
@@ -193,7 +183,7 @@ export default defineComponent({
       </quizzes>
 
       <creaciondeflashcard class="navbarcomponente">
-        <router-link to="creacionfc" class="navbarcomponente">
+        <router-link to="creacionfc" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
           <iconodeflashcard class="navbarcomponenteicono">
             <svg width="41" height="39" viewBox="0 0 29 27" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_164_347)">
@@ -216,7 +206,7 @@ export default defineComponent({
           <textocreaciondefc
             class="navbarcomponentetexto font-sans-Poppins text-lg"
             :class="
-              $route.name === 'crearfc'
+              $route.name === 'creacionfc'
                 ? 'text-primary-seleccionado'
                 : 'text-primary-noseleccionado'
             "
@@ -227,6 +217,7 @@ export default defineComponent({
         </router-link>
       </creaciondeflashcard>
 
+      </div>
 <!--      <ajustes class="navbarcomponente">-->
 <!--        <iconoajustes class="navbarcomponenteicono">-->
 <!--          <svg-->
@@ -254,3 +245,11 @@ export default defineComponent({
       </div>
     </navbar>
 </template>
+
+
+<style scoped>
+svg {
+  @apply relative translate-x-[-50%];
+}
+</style>
+```

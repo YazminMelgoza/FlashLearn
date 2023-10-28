@@ -10,15 +10,23 @@ import { db } from '@/services/firebase'
 
 const email = ref('')
 const password = ref('')
-const error = ref('')
+const errorMessage = ref('')
 const afterLoginClick = ref(false)
+
+function hasEmptyValues() {
+  return email.value === '' || password.value === ''
+}
 async function login() {
   afterLoginClick.value = true
+  if (hasEmptyValues()) return;
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
     const user = userCredential.user
+    // Buscar usuario en Firestore
     const querySnapshot = await getDocs(collection(db, 'users'))
     querySnapshot.forEach((doc) => {
+      console.log(doc.data());
+      console.log(user)
       if (doc.data().uid === user.uid) {
         const userStore = useUserStore()
         // Cargar usuario al estado actual
@@ -27,10 +35,15 @@ async function login() {
         userStore.points = doc.data().points
       }
     })
+
+    // esperar a que cargue el estado
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     router.push('/inicio')
   } catch (error) {
-    alert(error.message)
-    error.value = error.message
+    if (error.message) {
+      errorMessage.value = error.message
+    }
+
   }
 }
 </script>
@@ -56,7 +69,7 @@ async function login() {
         id="password"
         placeholder="Contraseña"
       />
-      <p>{{ error }}</p>
+      <p class="h-10 text-sm text-red-600">{{ errorMessage }}</p>
       <input @click="login" type="submit" value="Iniciar sesión" />
     </form>
     <p class="mt-4">¿No tienes una cuenta?</p>
