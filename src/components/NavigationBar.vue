@@ -59,7 +59,7 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
 </script>
 
 <template>
-    <navbar class="flex h-full w-[15rem] justify-center items-center flex-col shadow-xl">
+    <navbar class="flex h-full w-[15rem] justify-between items-center flex-col shadow-xl">
       <logo class="w-[75%]"> <img src="../assets/logo.png" width="250" height="100" /> </logo>
       <div class="w-full mt-10">
 

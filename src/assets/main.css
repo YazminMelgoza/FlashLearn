@@ -13,6 +13,12 @@
   .navbarcomponentetexto {
     @apply w-2/5 flex font-semibold justify-start items-start text-2xl;
   }
+  .progress-ring__circle {
+    stroke-dasharray: 400, 400;
+    transition: stroke-dashoffset 0.35s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }  
 }
 body {
   background-color: '#FFFFFF';
