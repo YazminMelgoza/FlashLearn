@@ -24,20 +24,24 @@ async function login() {
     const user = userCredential.user
     // Buscar usuario en Firestore
     // push after store is updated
+    const userStore = useUserStore()
+    userStore.isLoaded = false
+    router.push('/inicio')
     const querySnapshot = await getDocs(collection(db, 'users'))
     querySnapshot.forEach( (doc) => {
       console.log(doc.data());
       console.log(user)
       const userData = doc.data()
       if (userData.uid === user.uid) {
-        const userStore = useUserStore()
         // Cargar usuario al estado actual
         userStore.name = userData.username
         userStore.email = userData.email
         userStore.points = userData.points
+        userStore.isLoaded = true
+        console.log('User loaded to store')
+        console.log('changed to inicio')
       }
     })
-    router.push('/inicio')
 
 
   } catch (error) {

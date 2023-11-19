@@ -6,7 +6,8 @@ export const useUserStore = defineStore('user', {
     return {
       name: ref(''),
       email: ref(''),
-      points: ref(0)
+      points: ref(0),
+      isLoaded: ref(false)
     }
   }
 })

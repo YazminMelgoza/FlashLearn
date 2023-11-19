@@ -252,4 +252,3 @@ svg {
   @apply relative translate-x-[-50%];
 }
 </style>
-```

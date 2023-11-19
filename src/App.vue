@@ -17,7 +17,6 @@ onAuthStateChanged(auth, (user) => {
     router.push('/login')
     isLogged.value = false
   } else {
-    console.log(user)
     isLogged.value = true
     if (path.value === '/registro') {
       router.push('/inicio')
