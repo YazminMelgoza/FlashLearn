@@ -13,6 +13,8 @@ module.exports = {
       colors: {
         primary: {
           'fondo':'#FFFFFF',
+          'progreso1': '#816D00',
+          'iconoprogreso1': "#9E8600",
           'seleccionado': '#003B8C',
           'noseleccionado': '#ABABAB',
           'bloques': '#F5F7FF',

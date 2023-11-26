@@ -128,8 +128,7 @@
               </svg>
             </iconoasignatura>
             <nombreasignatura
-              class="font-semibold w-9/12 flex h-1/6 text-xl font-sans-Poppins justify-normal items-start text-start flex-col"
-            >
+              class="font-semibold w-9/12 flex h-1/6 text-xl font-sans-Poppins justify-normal items-start text-start flex-col">
               Asignatura
             </nombreasignatura>
           </asignatura>

@@ -1,9 +1,22 @@
 <script setup lang="ts">
-
+    import IndivQuiz from './IndivQuiz.vue'
+    import TermQuiz from './TermQuiz.vue'
 </script>
 
 <template>
-
+  <div class="w-full flex flex-col items-start justify-start">
+  <titulo class ="w-full justify-start font-sans-Poppins text-stone-950 text-4xl h-[10%] ml-[10%] mt-20 font-bold" > En progreso </titulo>
+  <div class="w-1/2 h-[50%] flex flex-col justify-start ml-[10%] items-start align-start">
+  <IndivQuiz/>
+  <IndivQuiz/>
+  </div>
+  <titulo class ="flex w-full justify-start font-sans-Poppins text-stone-950 text-4xl ml-[10%] pt-12 font-bold" > Terminados </titulo>
+  <terminados class = "ml-[10%] flex w-full h-1/5 flex-row ">
+    <TermQuiz/>
+    <TermQuiz/>
+    <TermQuiz/>
+  </terminados>
+  </div>
 </template>
 
 <style scoped>
