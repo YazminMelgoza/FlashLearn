@@ -53,6 +53,13 @@ import { ref } from 'vue'
 const username = ref('')
 
 onMounted( () => {
+  // if theres no state, load it from firestore
+  if (!userStore.isLoaded) {
+    console.log('User not loaded')
+
+
+  }
+
   console.log('HeaderTop mounted')
   username.value = userStore.name
 })
