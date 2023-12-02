@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import HeaderTop from '@/components/HeaderTop.vue'
 
 const title = ref('')
 const description = ref('')
@@ -13,7 +14,8 @@ const isPublic = ref(true)
 </script>
 
 <template>
-  <div class="w-screen p-10">
+  <div class="">
+    <HeaderTop title="Creación de Flashcards"/>
     <!--    Top bar-->
     <div class="flex justify-between">
       <h1 class="text-3xl mb-4 font-bold text-primary-100">Creación de Set</h1>

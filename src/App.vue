@@ -23,13 +23,25 @@ onAuthStateChanged(auth, (user) => {
     }
   }
 })
+
+const signOutOnReload = () => {
+  // Sign out the user when the page is reloaded or closed
+  window.addEventListener('beforeunload', () => {
+    auth.signOut();
+  });
+};
+
+// Run the signOutOnReload function to set up the event listener
+signOutOnReload();
 </script>
 
 <template>
   <div class="flex flex-row min-h-screen bg-primary-fondo">
     <HomePage v-if="isLogged" class="fixed h-screen bg-white" />
     <!--    <RouterView class="ml-[15rem] w-[calc(100% - 15rem)]" />-->
-    <RouterView :class="isLogged ? 'ml-[15rem] w-[calc(100% - 15rem)]' : 'w-full'" />
+    <div class="w-screen p-10">
+      <RouterView :class="isLogged ? 'ml-[15rem] w-[calc(100% - 15rem)]' : 'w-full'" />
+    </div>
   </div>
 </template>
 

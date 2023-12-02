@@ -3,5 +3,7 @@ export type User = {
   name: string,
   email: string,
   points: number,
-  level: number
+  level: number,
+  lastActivity: number | null,
+  streakDuration: number,
 }

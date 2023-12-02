@@ -4,9 +4,7 @@ import { RouterLink } from 'vue-router'
 import { auth } from '@/services/firebase'
 import router from '@/router'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { useUserStore } from '@/stores/userStore'
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '@/services/firebase'
+import {UserRepository} from "@/repositories/UserRepository";
 
 const email = ref('')
 const password = ref('')
@@ -23,27 +21,9 @@ async function login() {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
     const user = userCredential.user
     // Buscar usuario en Firestore
-    // push after store is updated
-    const userStore = useUserStore()
-    userStore.isLoaded = false
-    router.push('/inicio')
-    const querySnapshot = await getDocs(collection(db, 'users'))
-    querySnapshot.forEach( (doc) => {
-      console.log(doc.data());
-      console.log(user)
-      const userData = doc.data()
-      if (userData.uid === user.uid) {
-        // Cargar usuario al estado actual
-        userStore.name = userData.username
-        userStore.email = userData.email
-        userStore.points = userData.points
-        userStore.isLoaded = true
-        console.log('User loaded to store')
-        console.log('changed to inicio')
-      }
-    })
-
-
+    const userRepo = new UserRepository()
+    await userRepo.loadUser(user)
+    await router.push('/inicio')
   } catch (error) {
     if (error.message) {
       errorMessage.value = error.message

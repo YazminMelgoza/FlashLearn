@@ -22,19 +22,24 @@ const userStore = useUserStore()
 async function register() {
   afterRegisterClick.value = true
   if (hasEmptyValues()) {
+    // load user to current state
     return
   }
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
-    // load user to current state
     userStore.name = username.value
     userStore.email = email.value
-    router.push('/inicio')
+    userStore.uid = userCredential.user.uid
+    userStore.isLoaded = true
+    userStore.level = 1
+    userStore.points = 0
     // Add user to Firestore
+    await router.push('/inicio')
     await addDoc(collection(db, 'users'), {
       email: userCredential.user.email,
       uid: userCredential.user.uid,
       username: username.value,
+      level: 1,
       points: 0
     })
   } catch (error) {
@@ -112,6 +117,7 @@ label {
   display: block;
   margin-top: 10px;
 }
+
 input {
   margin: 5px 0;
   border-radius: 5px;
