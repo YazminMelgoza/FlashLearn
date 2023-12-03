@@ -16,5 +16,4 @@ export type Set = {
   isPublic: boolean
   imageUrl: string
   lastReviewTimestamp: Date | null
-  flashcards: Flashcard[]
 }

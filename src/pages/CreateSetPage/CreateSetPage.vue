@@ -43,14 +43,13 @@ async function createSet() {
     title: title.value,
     description: description.value,
     course: course.value,
-    flashcards: flashcards.value,
     isPublic: isPublic.value,
     imageUrl: imageUrl.value,
     lastReviewTimestamp: null
   }
   const setRepository = new SetRepository()
   try {
-    await setRepository.createSet(set)
+    await setRepository.createSet(set, flashcards.value)
   } catch (error) {
     console.error(error)
     alert('Error creating set. Please try again.')
