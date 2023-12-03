@@ -1,11 +1,11 @@
 import type Set from '@/entities/Set'
 import { db } from '@/services/firebase'
 import { collection, getDocs, addDoc } from 'firebase/firestore'
-import {useUserStore} from "@/stores/userStore";
+import { useUserStore } from '@/stores/userStore'
 import type { Set } from '@/entities/Set'
 
 export class SetRepository {
-// get the user id at initialization
+  // get the user id at initialization
   public userId: string
   constructor() {
     const userStore = useUserStore()
@@ -26,13 +26,13 @@ export class SetRepository {
           userId: setData.userId,
           isPublic: setData.isPublic,
           imageUrl: setData.imageUrl,
+          lastReviewTimestamp: setData.lastReviewTimestamp,
           flashcards: setData.flashcards
         })
       }
     })
     return sets
   }
-
 
   // create set
   public async createSet(set: Set): Promise<void> {
@@ -43,10 +43,9 @@ export class SetRepository {
       description: set.description,
       userId: this.userId,
       isPublic: set.isPublic,
+      lastReviewTimestamp: null,
       imageUrl: set.imageUrl,
       flashcards: set.flashcards
-    })
-    }
+    } as Set)
   }
-
-
+}

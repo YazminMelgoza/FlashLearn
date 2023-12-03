@@ -5,6 +5,7 @@ import type { Flashcard, Set } from '@/entities/Set'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/services/firebase'
 import { useUserStore } from '@/stores/userStore'
+import { SetRepository } from '@/repositories/SetRepository'
 
 const title = ref('')
 const description = ref('')
@@ -35,13 +36,25 @@ async function scrollToBottom() {
 addEmptyFlashcard()
 
 async function createSet() {
+  if (!validateForm()) {
+    return
+  }
   const set: Set = {
     title: title.value,
     description: description.value,
     course: course.value,
     flashcards: flashcards.value,
     isPublic: isPublic.value,
-    imageUrl: imageUrl.value
+    imageUrl: imageUrl.value,
+    lastReviewTimestamp: null
+  }
+  const setRepository = new SetRepository()
+  try {
+    await setRepository.createSet(set)
+  } catch (error) {
+    console.error(error)
+    alert('Error creating set. Please try again.')
+    return
   }
 }
 
@@ -49,6 +62,36 @@ function openFilePicker() {
   fileInput.value?.click()
 }
 
+function validateForm() {
+  if (!title.value) {
+    alert('Please enter a title.')
+    return false
+  }
+  if (!description.value) {
+    alert('Please enter a description.')
+    return false
+  }
+  if (!course.value) {
+    alert('Please enter a course.')
+    return false
+  }
+  if (!flashcards.value.length) {
+    alert('Please enter at least one flashcard.')
+    return false
+  }
+  // validate each flashcard
+  for (const flashcard of flashcards.value) {
+    if (!flashcard.front) {
+      alert('Please enter a front for each flashcard.')
+      return false
+    }
+    if (!flashcard.back) {
+      alert('Please enter a back for each flashcard.')
+      return false
+    }
+  }
+  return true
+}
 const handleFileChange = (event) => {
   selectedFile.value = event.target.files[0]
   uploadImage()
@@ -78,7 +121,7 @@ const uploadImage = async () => {
     <!--    Floating default image on left, which on click can be uploaded a new image -->
     <div
       @click="openFilePicker"
-      class="w-[40%] max-w-[20rem] aspect-[0.85] rounded-3xl cursor-pointer mb-4 float-right"
+      class="w-[40%] max-w-[20rem] shadow-xl bg-center aspect-[0.85] rounded-3xl cursor-pointer mb-4 float-right"
       :style="{ backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover' }"
     >
       <input
@@ -177,13 +220,6 @@ const uploadImage = async () => {
       <button @click="createSet" class="bg-primary-100 p-3 text-white rounded-lg">Crear set</button>
       <!--      button to delete the flashcard       -->
     </div>
-
-    {{ flashcards }}
-    {{ isPublic }}
-    {{ title }}
-    {{ description }}
-    {{ course }}
-    {{ imageUrl }}
   </div>
 </template>
 
