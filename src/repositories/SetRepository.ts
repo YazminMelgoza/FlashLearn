@@ -1,7 +1,8 @@
 import type Set from '@/entities/Set'
 import { db } from '@/services/firebase'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, addDoc } from 'firebase/firestore'
 import {useUserStore} from "@/stores/userStore";
+import type { Set } from '@/entities/Set'
 
 export class SetRepository {
 // get the user id at initialization
@@ -31,4 +32,21 @@ export class SetRepository {
     })
     return sets
   }
+
+
+  // create set
+  public async createSet(set: Set): Promise<void> {
+    console.log('creating set to firestore')
+    await addDoc(collection(db, 'sets'), {
+      title: set.title,
+      course: set.course,
+      description: set.description,
+      userId: this.userId,
+      isPublic: set.isPublic,
+      imageUrl: set.imageUrl,
+      flashcards: set.flashcards
+    })
+    }
   }
+
+
