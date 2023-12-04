@@ -11,6 +11,24 @@ export class SetRepository {
     this.userId = userStore.id
   }
 
+  // get all flashcards from an specific set
+  public async getSetFlashcards(setId: string): Promise<Flashcard[]> {
+    const querySnapshot = await getDocs(collection(db, `sets/${setId}/flashcards`))
+    const flashcards: Flashcard[] = []
+    querySnapshot.forEach((doc) => {
+      const flashcardData = doc.data()
+      const flashcard: Flashcard = {
+        id: doc.id,
+        front: flashcardData.front,
+        back: flashcardData.back,
+        lastReviewTimestamp: flashcardData.lastReviewTimestamp,
+        nextReviewTimestamp: flashcardData.nextReviewTimestamp,
+        easePercentage: flashcardData.easePercentage
+      }
+      flashcards.push(flashcard)
+    })
+    return flashcards
+  }
   // get all sets from the user
   public async getAllSets(): Promise<Set[]> {
     const querySnapshot = await getDocs(collection(db, 'sets'))
