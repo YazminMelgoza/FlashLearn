@@ -18,6 +18,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@heroicons/vue": "^2.0.18",
     "dependencies": "^0.0.1",
     "firebase": "^10.5.1",
     "pinia": "^2.1.6",
