@@ -1,20 +1,18 @@
 <template>
-  <div class="w-2/3 h-1/2 flex flex-col justify-center align-items">
-    <tituloset class="text-xl text-sans-Poppins font-semibold items-start justify-center"
-      >Historia de Mexico</tituloset
+  <div class="w-full flex flex-col justify-center align-items">
+    <div class="text-3xl text-sans-Poppins font-semibold items-start justify-center">
+      {{ groupTitle }}
+    </div>
+    <div
+      class="flex-row rounded-xl my-4 flex justify-center bg-slate-100 p-4 flex-wrap h-auto w-full"
     >
-    <contenedorfc
-      class="flex-row rounded-xl mt-[3%] bg-primary-bloques flex justify-center w-full h-full"
-    >
-      <FcDentro />
-      <FcDentro />
-      <FcDentro />
-    </contenedorfc>
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import FcDentro from './FcDentro.vue'
+defineProps({
+  groupTitle: String
+})
 </script>
-
-<style scoped></style>

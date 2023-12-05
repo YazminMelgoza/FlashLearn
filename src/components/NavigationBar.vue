@@ -4,22 +4,24 @@ import { useRoute } from 'vue-router'
 // firebase logout import
 import router from './../router'
 import { useUserStore } from '@/stores/userStore'
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut } from 'firebase/auth'
 
 function logoutFromFirebase() {
-  const auth = getAuth();
-  signOut(auth).then(() => {
-    // Sign-out successful.
-    router.push('/login')
-    // delete user from current state
-    const userStore = useUserStore()
-    userStore.name = ''
-    userStore.email = ''
-    router.push('/login')
-  }).catch((error) => {
-    // An error happened.
-    alert('Error al cerrar sesión')
-  });
+  const auth = getAuth()
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+      router.push('/login')
+      // delete user from current state
+      const userStore = useUserStore()
+      userStore.name = ''
+      userStore.email = ''
+      router.push('/login')
+    })
+    .catch((error) => {
+      // An error happened.
+      alert('Error al cerrar sesión')
+    })
 }
 
 const route = useRoute() // Obtén la información de la ruta
@@ -29,43 +31,45 @@ let qcolorSVG = ref('#ABABAB') // Color predeterminado
 let fcolorSVG = ref('#ABABAB') // Color predeterminado
 let icolorSVG = ref('#ABABAB') // Color predeterminado
 
-    watch(
-      () => route.name,
-      (to, from) => {
-        console.log('Nueva página activa:', to)
+watch(
+  () => route.name,
+  (to, from) => {
+    console.log('Nueva página activa:', to)
 
-        if (to === 'crearfc') {
-          cfcolorSVG.value = '#003B8C'
-        } else {
-          cfcolorSVG.value = '#ABABAB'
-        }
-        if (to === 'quizzes') {
-          qcolorSVG.value = '#003B8C'
-        } else {
-          qcolorSVG.value = '#ABABAB'
-        }
-        if (to === 'inicio') {
-          icolorSVG.value = '#003B8C'
-        } else {
-          icolorSVG.value = '#ABABAB'
-        }
-        if (to === 'flashcards') {
-          fcolorSVG.value = '#003B8C'
-        } else {
-          fcolorSVG.value= '#ABABAB'
-        }
-      }
-    )
+    if (to === 'crearfc') {
+      cfcolorSVG.value = '#003B8C'
+    } else {
+      cfcolorSVG.value = '#ABABAB'
+    }
+    if (to === 'quizzes') {
+      qcolorSVG.value = '#003B8C'
+    } else {
+      qcolorSVG.value = '#ABABAB'
+    }
+    if (to === 'inicio') {
+      icolorSVG.value = '#003B8C'
+    } else {
+      icolorSVG.value = '#ABABAB'
+    }
+    if (to === 'flashcards') {
+      fcolorSVG.value = '#003B8C'
+    } else {
+      fcolorSVG.value = '#ABABAB'
+    }
+  }
+)
 </script>
 
 <template>
-    <div class="flex h-full w-[15rem] justify-between items-center flex-col shadow-xl">
-      <div class="w-[75%]"> <img src="../assets/logo.png" width="250" height="100" /> </div>
-      <div class="w-full mt-10">
-
-      <div class="navbarcomponente">
-        <router-link to="inicio" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <div class="navbarcomponenteicono">
+  <navbar class="flex h-full w-[15rem] justify-between items-center flex-col shadow-xl">
+    <logo class="w-[75%]"> <img src="../assets/logo.png" width="250" height="100" /> </logo>
+    <div class="w-full mt-10">
+      <inicio class="navbarcomponente">
+        <router-link
+          to="/inicio"
+          class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
+        >
+          <iconodeinicio class="navbarcomponenteicono">
             <svg
               width="40"
               height="40"
@@ -95,10 +99,13 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
             Inicio
           </div>
         </router-link>
-      </div>
-      <div class="navbarcomponente">
-        <router-link to="flashcards" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <div class="navbarcomponenteicono">
+      </inicio>
+      <flashcards class="navbarcomponente">
+        <router-link
+          to="/flashcards"
+          class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
+        >
+          <iconodeflashcard class="navbarcomponenteicono">
             <svg
               width="40"
               height="40"
@@ -130,9 +137,12 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
         </router-link>
       </div>
 
-      <div class="navbarcomponente">
-        <router-link to="quizzes" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <div class="navbarcomponenteicono">
+      <quizzes class="navbarcomponente">
+        <router-link
+          to="/quizzes"
+          class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
+        >
+          <iconodequiz class="navbarcomponenteicono">
             <svg
               width="34"
               height="34"
@@ -182,9 +192,12 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
         </router-link>
       </div>
 
-      <div class="navbarcomponente">
-        <router-link to="creacionfc" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <div class="navbarcomponenteicono">
+      <creaciondeflashcard class="navbarcomponente">
+        <router-link
+          to="/creacionfc"
+          class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
+        >
+          <iconodeflashcard class="navbarcomponenteicono">
             <svg width="41" height="39" viewBox="0 0 29 27" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_164_347)">
                 <path
@@ -215,37 +228,36 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
             Flashcards
           </div>
         </router-link>
-      </div>
-
-      </div>
-<!--      <ajustes class="navbarcomponente">-->
-<!--        <iconoajustes class="navbarcomponenteicono">-->
-<!--          <svg-->
-<!--            width="57"-->
-<!--            height="58"-->
-<!--            viewBox="0 0 57 58"-->
-<!--            fill="none"-->
-<!--            xmlns="http://www.w3.org/2000/svg"-->
-<!--          >-->
-<!--            <rect width="57" height="58" rx="16" fill="#F5F7FF" />-->
-<!--            <path-->
-<!--              d="M45.04 32.09C45.3503 32.3185 45.5817 32.6379 45.702 33.004C45.8223 33.3701 45.8255 33.7645 45.7113 34.1325C44.9189 36.6657 43.5711 38.9901 41.7663 40.9363C41.5057 41.2157 41.1649 41.4074 40.7908 41.4851C40.4168 41.5627 40.0278 41.5225 39.6775 41.37L37.2338 40.2975C36.9668 40.1787 36.6757 40.1239 36.3838 40.1375C36.0929 40.1544 35.8101 40.2401 35.5588 40.3875C35.307 40.5332 35.0934 40.7365 34.9355 40.9807C34.7775 41.225 34.6797 41.5032 34.65 41.7925L34.3563 44.455C34.314 44.834 34.1555 45.1907 33.9027 45.4762C33.6498 45.7618 33.3149 45.9622 32.9438 46.05C30.3488 46.6688 27.6438 46.6688 25.0488 46.05C24.6802 45.9608 24.3478 45.7609 24.0964 45.477C23.845 45.1932 23.6866 44.8391 23.6425 44.4625L23.3488 41.805C23.298 41.3521 23.0822 40.9338 22.7425 40.63C22.477 40.3958 22.1506 40.2416 21.8011 40.1852C21.4516 40.1288 21.0932 40.1725 20.7675 40.3113L18.3238 41.385C17.9745 41.5375 17.5866 41.5781 17.2133 41.5014C16.84 41.4246 16.4996 41.2342 16.2388 40.9563C14.4309 39.0081 13.0814 36.6805 12.2888 34.1438C12.1751 33.7762 12.1786 33.3825 12.2986 33.017C12.4187 32.6515 12.6494 32.3323 12.9588 32.1038L15.115 30.51C15.3506 30.3372 15.5422 30.1114 15.6743 29.8508C15.8064 29.5902 15.8752 29.3022 15.8752 29.01C15.8752 28.7178 15.8064 28.4298 15.6743 28.1692C15.5422 27.9086 15.3506 27.6828 15.115 27.51L12.9588 25.9188C12.651 25.6914 12.4213 25.3742 12.3013 25.0109C12.1813 24.6475 12.1769 24.2559 12.2888 23.89C13.0811 21.3552 14.4303 19.0297 16.2375 17.0838C16.4125 16.895 16.625 16.745 16.8625 16.645C17.0939 16.547 17.3425 16.4965 17.5938 16.4965C17.845 16.4965 18.0937 16.547 18.325 16.645L20.7588 17.7175C21.0265 17.8325 21.3175 17.8832 21.6083 17.8656C21.8992 17.8479 22.1819 17.7624 22.4338 17.6159C22.6857 17.4693 22.8997 17.2659 23.0588 17.0217C23.2179 16.7776 23.3177 16.4996 23.35 16.21L23.645 13.5575C23.6879 13.1745 23.8492 12.8144 24.1064 12.5274C24.3637 12.2404 24.704 12.0407 25.08 11.9563C26.3719 11.6712 27.6897 11.5196 29.0125 11.5038C30.3275 11.5188 31.6375 11.67 32.9213 11.9563C33.2981 12.0401 33.6392 12.2401 33.8964 12.528C34.1536 12.816 34.314 13.1774 34.355 13.5613L34.65 16.2113C34.6813 16.5004 34.7802 16.7782 34.9387 17.022C35.0971 17.2659 35.3108 17.4691 35.5623 17.6151C35.8138 17.7611 36.0962 17.8459 36.3866 17.8626C36.6769 17.8793 36.9672 17.8275 37.2338 17.7113L39.6663 16.64C40.0171 16.4874 40.4065 16.447 40.7811 16.5244C41.1557 16.6019 41.4972 16.7933 41.7588 17.0725C43.5649 19.0165 44.9132 21.3399 45.705 23.8725C45.8195 24.2397 45.8163 24.6335 45.696 24.9988C45.5756 25.3642 45.3441 25.6827 45.0338 25.91L42.8838 27.5013C42.6472 27.6725 42.4546 27.8972 42.3215 28.1572C42.1885 28.4171 42.1189 28.7048 42.1184 28.9969C42.1179 29.2889 42.1866 29.5768 42.3187 29.8372C42.4509 30.0976 42.6428 30.323 42.8788 30.495L45.04 32.09ZM29 34C30.3261 34 31.5979 33.4732 32.5356 32.5355C33.4732 31.5979 34 30.3261 34 29C34 27.6739 33.4732 26.4022 32.5356 25.4645C31.5979 24.5268 30.3261 24 29 24C27.6739 24 26.4022 24.5268 25.4645 25.4645C24.5268 26.4022 24 27.6739 24 29C24 30.3261 24.5268 31.5979 25.4645 32.5355C26.4022 33.4732 27.6739 34 29 34Z"-->
-<!--              fill="#ABABAB"-->
-<!--            />-->
-<!--          </svg>-->
-<!--        </iconoajustes>-->
-<!--        <textoajustes class="navbarcomponentetexto font-sans-Poppins text-gray-600"-->
-<!--          >Ajustes-->
-<!--        </textoajustes>-->
-<!--      </ajustes>-->
-      <div
-          @click="logoutFromFirebase"
-          class="bg-gray-100 mt-16 w-[90%] hover:bg-red-100 cursor-pointer hover:text-red-800 text-center py-2 mb-4 text-sm text-gray-500 rounded-xl">
-        Cerrar Sesion
-      </div>
+      </creaciondeflashcard>
     </div>
+    <!--      <ajustes class="navbarcomponente">-->
+    <!--        <iconoajustes class="navbarcomponenteicono">-->
+    <!--          <svg-->
+    <!--            width="57"-->
+    <!--            height="58"-->
+    <!--            viewBox="0 0 57 58"-->
+    <!--            fill="none"-->
+    <!--            xmlns="http://www.w3.org/2000/svg"-->
+    <!--          >-->
+    <!--            <rect width="57" height="58" rx="16" fill="#F5F7FF" />-->
+    <!--            <path-->
+    <!--              d="M45.04 32.09C45.3503 32.3185 45.5817 32.6379 45.702 33.004C45.8223 33.3701 45.8255 33.7645 45.7113 34.1325C44.9189 36.6657 43.5711 38.9901 41.7663 40.9363C41.5057 41.2157 41.1649 41.4074 40.7908 41.4851C40.4168 41.5627 40.0278 41.5225 39.6775 41.37L37.2338 40.2975C36.9668 40.1787 36.6757 40.1239 36.3838 40.1375C36.0929 40.1544 35.8101 40.2401 35.5588 40.3875C35.307 40.5332 35.0934 40.7365 34.9355 40.9807C34.7775 41.225 34.6797 41.5032 34.65 41.7925L34.3563 44.455C34.314 44.834 34.1555 45.1907 33.9027 45.4762C33.6498 45.7618 33.3149 45.9622 32.9438 46.05C30.3488 46.6688 27.6438 46.6688 25.0488 46.05C24.6802 45.9608 24.3478 45.7609 24.0964 45.477C23.845 45.1932 23.6866 44.8391 23.6425 44.4625L23.3488 41.805C23.298 41.3521 23.0822 40.9338 22.7425 40.63C22.477 40.3958 22.1506 40.2416 21.8011 40.1852C21.4516 40.1288 21.0932 40.1725 20.7675 40.3113L18.3238 41.385C17.9745 41.5375 17.5866 41.5781 17.2133 41.5014C16.84 41.4246 16.4996 41.2342 16.2388 40.9563C14.4309 39.0081 13.0814 36.6805 12.2888 34.1438C12.1751 33.7762 12.1786 33.3825 12.2986 33.017C12.4187 32.6515 12.6494 32.3323 12.9588 32.1038L15.115 30.51C15.3506 30.3372 15.5422 30.1114 15.6743 29.8508C15.8064 29.5902 15.8752 29.3022 15.8752 29.01C15.8752 28.7178 15.8064 28.4298 15.6743 28.1692C15.5422 27.9086 15.3506 27.6828 15.115 27.51L12.9588 25.9188C12.651 25.6914 12.4213 25.3742 12.3013 25.0109C12.1813 24.6475 12.1769 24.2559 12.2888 23.89C13.0811 21.3552 14.4303 19.0297 16.2375 17.0838C16.4125 16.895 16.625 16.745 16.8625 16.645C17.0939 16.547 17.3425 16.4965 17.5938 16.4965C17.845 16.4965 18.0937 16.547 18.325 16.645L20.7588 17.7175C21.0265 17.8325 21.3175 17.8832 21.6083 17.8656C21.8992 17.8479 22.1819 17.7624 22.4338 17.6159C22.6857 17.4693 22.8997 17.2659 23.0588 17.0217C23.2179 16.7776 23.3177 16.4996 23.35 16.21L23.645 13.5575C23.6879 13.1745 23.8492 12.8144 24.1064 12.5274C24.3637 12.2404 24.704 12.0407 25.08 11.9563C26.3719 11.6712 27.6897 11.5196 29.0125 11.5038C30.3275 11.5188 31.6375 11.67 32.9213 11.9563C33.2981 12.0401 33.6392 12.2401 33.8964 12.528C34.1536 12.816 34.314 13.1774 34.355 13.5613L34.65 16.2113C34.6813 16.5004 34.7802 16.7782 34.9387 17.022C35.0971 17.2659 35.3108 17.4691 35.5623 17.6151C35.8138 17.7611 36.0962 17.8459 36.3866 17.8626C36.6769 17.8793 36.9672 17.8275 37.2338 17.7113L39.6663 16.64C40.0171 16.4874 40.4065 16.447 40.7811 16.5244C41.1557 16.6019 41.4972 16.7933 41.7588 17.0725C43.5649 19.0165 44.9132 21.3399 45.705 23.8725C45.8195 24.2397 45.8163 24.6335 45.696 24.9988C45.5756 25.3642 45.3441 25.6827 45.0338 25.91L42.8838 27.5013C42.6472 27.6725 42.4546 27.8972 42.3215 28.1572C42.1885 28.4171 42.1189 28.7048 42.1184 28.9969C42.1179 29.2889 42.1866 29.5768 42.3187 29.8372C42.4509 30.0976 42.6428 30.323 42.8788 30.495L45.04 32.09ZM29 34C30.3261 34 31.5979 33.4732 32.5356 32.5355C33.4732 31.5979 34 30.3261 34 29C34 27.6739 33.4732 26.4022 32.5356 25.4645C31.5979 24.5268 30.3261 24 29 24C27.6739 24 26.4022 24.5268 25.4645 25.4645C24.5268 26.4022 24 27.6739 24 29C24 30.3261 24.5268 31.5979 25.4645 32.5355C26.4022 33.4732 27.6739 34 29 34Z"-->
+    <!--              fill="#ABABAB"-->
+    <!--            />-->
+    <!--          </svg>-->
+    <!--        </iconoajustes>-->
+    <!--        <textoajustes class="navbarcomponentetexto font-sans-Poppins text-gray-600"-->
+    <!--          >Ajustes-->
+    <!--        </textoajustes>-->
+    <!--      </ajustes>-->
+    <div
+      @click="logoutFromFirebase"
+      class="bg-gray-100 mt-16 w-[90%] hover:bg-red-100 cursor-pointer hover:text-red-800 text-center py-2 mb-4 text-sm text-gray-500 rounded-xl"
+    >
+      Cerrar Sesion
+    </div>
+  </navbar>
 </template>
-
 
 <style scoped>
 svg {

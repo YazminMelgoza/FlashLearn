@@ -16,6 +16,11 @@ const router = createRouter({
       component: () => import('../pages/HomePage/components/FlashCards.vue')
     },
     {
+      path: '/flashcards/:id',
+      name: 'flashcards-detail',
+      component: () => import('../pages/FlashcardsDetail/FlashcardsDetailPage.vue')
+    },
+    {
       path: '/inicio',
       name: 'inicio',
       component: () => import('../pages/HomePage/InicioFL.vue')
