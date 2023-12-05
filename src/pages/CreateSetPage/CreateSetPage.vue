@@ -6,6 +6,8 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage
 import { storage } from '@/services/firebase'
 import { useUserStore } from '@/stores/userStore'
 import { SetRepository } from '@/repositories/SetRepository'
+import { showSuccess } from '@/helpers/showSuccess'
+import router from '@/router'
 
 const title = ref('')
 const description = ref('')
@@ -49,7 +51,9 @@ async function createSet() {
   }
   const setRepository = new SetRepository()
   try {
-    await setRepository.createSet(set, flashcards.value)
+    const setId = await setRepository.createSet(set, flashcards.value)
+    await showSuccess('Set creado correctamente')
+    router.push('/flashcards/' + setId)
   } catch (error) {
     console.error(error)
     alert('Error creating set. Please try again.')

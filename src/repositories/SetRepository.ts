@@ -121,7 +121,7 @@ export class SetRepository {
   }
 
   // create set
-  public async createSet(set: Set, flashcards: Flashcard[]): Promise<void> {
+  public async createSet(set: Set, flashcards: Flashcard[]): Promise<string> {
     console.log('creating set to firestore')
     const docref = await addDoc(collection(db, 'sets'), {
       title: set.title,
@@ -145,5 +145,6 @@ export class SetRepository {
         easePercentage: null
       })
     }
+    return docref.id
   }
 }
