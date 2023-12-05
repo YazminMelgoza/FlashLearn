@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2'
 
-export const showError = (message: string) => {
+export const showError = async (message: string) => {
   Swal.fire({
     icon: 'error',
     title: 'Oops...',
