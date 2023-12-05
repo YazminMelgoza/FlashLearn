@@ -4,7 +4,7 @@
     class="flex-row rounded-xl w-[45%] mt-[3%] p-8 bg-primary-bloques flex flex-wrap justify-between min-h-[15rem] h-full"
   >-->
   <RouterLink
-    to="quiz"
+    :to="'/quizzes/' + quiz.id"
     class="flex-row rounded-xl w-[45%] mt-[3%] p-8 bg-primary-bloques flex flex-wrap justify-between min-h-[15rem] h-full"
     >
     <div class="w-[23.9rem] flex flex-col">
