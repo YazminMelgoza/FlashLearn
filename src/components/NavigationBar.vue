@@ -59,13 +59,13 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
 </script>
 
 <template>
-    <navbar class="flex h-full w-[15rem] justify-between items-center flex-col shadow-xl">
-      <logo class="w-[75%]"> <img src="../assets/logo.png" width="250" height="100" /> </logo>
+    <div class="flex h-full w-[15rem] justify-between items-center flex-col shadow-xl">
+      <div class="w-[75%]"> <img src="../assets/logo.png" width="250" height="100" /> </div>
       <div class="w-full mt-10">
 
-      <inicio class="navbarcomponente">
+      <div class="navbarcomponente">
         <router-link to="inicio" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <iconodeinicio class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg
               width="40"
               height="40"
@@ -85,20 +85,20 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
                 :fill="icolorSVG"
               />
             </svg>
-          </iconodeinicio>
-          <iniciotexto
+          </div>
+          <div
             class="flex navbarcomponentetexto text-lg"
             :class="
               $route.name === 'inicio' ? 'text-primary-seleccionado' : 'text-primary-noseleccionado'
             "
           >
             Inicio
-          </iniciotexto>
+          </div>
         </router-link>
-      </inicio>
-      <flashcards class="navbarcomponente">
+      </div>
+      <div class="navbarcomponente">
         <router-link to="flashcards" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <iconodeflashcard class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg
               width="40"
               height="40"
@@ -116,8 +116,8 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
                 :fill="fcolorSVG"
               />
             </svg>
-          </iconodeflashcard>
-          <flashcardtexto
+          </div>
+          <div
             class="navbarcomponentetexto text-lg"
             :class="
               $route.name === 'flashcards'
@@ -126,13 +126,13 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
             "
           >
             Flashcard
-          </flashcardtexto>
+          </div>
         </router-link>
-      </flashcards>
+      </div>
 
-      <quizzes class="navbarcomponente">
+      <div class="navbarcomponente">
         <router-link to="quizzes" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <iconodequiz class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg
               width="34"
               height="34"
@@ -168,8 +168,8 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
                 d="M16.9388 23.9966C17.7184 23.9966 18.3504 23.3646 18.3504 22.585C18.3504 21.8055 17.7184 21.1735 16.9388 21.1735C16.1592 21.1735 15.5272 21.8055 15.5272 22.585C15.5272 23.3646 16.1592 23.9966 16.9388 23.9966Z"
               />
             </svg>
-          </iconodequiz>
-          <textodequiz
+          </div>
+          <div
             class="navbarcomponentetexto font-sans-Poppins text-lg"
             :class="
               $route.name === 'quizzes'
@@ -178,13 +178,13 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
             "
           >
             Quizzes
-          </textodequiz>
+          </div>
         </router-link>
-      </quizzes>
+      </div>
 
-      <creaciondeflashcard class="navbarcomponente">
+      <div class="navbarcomponente">
         <router-link to="creacionfc" class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl">
-          <iconodeflashcard class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg width="41" height="39" viewBox="0 0 29 27" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_164_347)">
                 <path
@@ -202,8 +202,8 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
                 </clipPath>
               </defs>
             </svg>
-          </iconodeflashcard>
-          <textocreaciondefc
+          </div>
+          <div
             class="navbarcomponentetexto font-sans-Poppins text-lg"
             :class="
               $route.name === 'creacionfc'
@@ -213,9 +213,9 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
           >
             Crear <br />
             Flashcards
-          </textocreaciondefc>
+          </div>
         </router-link>
-      </creaciondeflashcard>
+      </div>
 
       </div>
 <!--      <ajustes class="navbarcomponente">-->
@@ -243,7 +243,7 @@ let icolorSVG = ref('#ABABAB') // Color predeterminado
           class="bg-gray-100 mt-16 w-[90%] hover:bg-red-100 cursor-pointer hover:text-red-800 text-center py-2 mb-4 text-sm text-gray-500 rounded-xl">
         Cerrar Sesion
       </div>
-    </navbar>
+    </div>
 </template>
 
 
