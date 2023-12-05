@@ -4,6 +4,13 @@
     import router from './../router'
     import HeaderTop from "@/components/HeaderTop.vue";
     import  PosibleRespuesta from './PosibleRespuesta.vue';
+    /*const respuesta1 = document.querySelector("#1")
+    const respuesta2 = document.querySelector("#2")
+    const respuesta3= document.querySelector("#3")
+    const respuesta4 = document.querySelector("#4")
+  */
+
+
 </script>
 
 <template>
@@ -38,10 +45,10 @@
       <div class = "justify-end items-end flex mr-8 mb-8 text-2xl text-primary-bloques font-semibold font-sans-Poppins">11/12</div>
     </div>
     <div class = "flex flex-row h-[30%] w-full">
-      <PosibleRespuesta />
-      <PosibleRespuesta />
-      <PosibleRespuesta />
-      <PosibleRespuesta />
+      <PosibleRespuesta id="1" />
+      <PosibleRespuesta id="2"/>
+      <PosibleRespuesta id="3"/>
+      <PosibleRespuesta id="4"/>
     </div>
   </div>
 </template>

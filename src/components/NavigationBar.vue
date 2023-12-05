@@ -64,12 +64,12 @@ watch(
   <navbar class="flex h-full w-[15rem] justify-between items-center flex-col shadow-xl">
     <logo class="w-[75%]"> <img src="../assets/logo.png" width="250" height="100" /> </logo>
     <div class="w-full mt-10">
-      <inicio class="navbarcomponente">
+      <div class="navbarcomponente">
         <router-link
           to="/inicio"
           class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
         >
-          <iconodeinicio class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg
               width="40"
               height="40"
@@ -99,13 +99,13 @@ watch(
             Inicio
           </div>
         </router-link>
-      </inicio>
-      <flashcards class="navbarcomponente">
+      </div>
+      <div class="navbarcomponente">
         <router-link
           to="/flashcards"
           class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
         >
-          <iconodeflashcard class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg
               width="40"
               height="40"
@@ -137,12 +137,12 @@ watch(
         </router-link>
       </div>
 
-      <quizzes class="navbarcomponente">
+      <div class="navbarcomponente">
         <router-link
           to="/quizzes"
           class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
         >
-          <iconodequiz class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg
               width="34"
               height="34"
@@ -192,12 +192,12 @@ watch(
         </router-link>
       </div>
 
-      <creaciondeflashcard class="navbarcomponente">
+      <div class="navbarcomponente">
         <router-link
           to="/creacionfc"
           class="navbarcomponente w-[90%] hover:bg-accent-100 bg-white py-8 rounded-xl"
         >
-          <iconodeflashcard class="navbarcomponenteicono">
+          <div class="navbarcomponenteicono">
             <svg width="41" height="39" viewBox="0 0 29 27" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_164_347)">
                 <path
@@ -228,7 +228,7 @@ watch(
             Flashcards
           </div>
         </router-link>
-      </creaciondeflashcard>
+      </div>
     </div>
     <!--      <ajustes class="navbarcomponente">-->
     <!--        <iconoajustes class="navbarcomponenteicono">-->

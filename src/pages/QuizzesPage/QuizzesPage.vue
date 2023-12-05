@@ -7,6 +7,8 @@ import { onMounted } from 'vue'
 import { SetRepository } from '@/repositories/SetRepository'
 import { ref } from 'vue'
 import { showError } from '@/helpers/showError'
+import { RouterLink } from 'vue-router'
+import router from '@/router'
 
 type Quiz = {
   id?: string
@@ -76,7 +78,7 @@ onMounted(async () => {
     <div class="w-full justify-start font-sans-Poppins text-stone-950 text-2xl h-[10%] font-bold">
       En progreso
     </div>
-    <div class="w-full flex flex-wrap justify-around items-start align-start">
+    <div class="w-full flex flex-wrap justify-around items-start align-start flex-row">
       <IndivQuiz v-for="quiz in quizzesInProgress" :quiz="quiz" />
     </div>
     <div class="flex w-full justify-start text-stone-950 text-4xl ml-[10%] pt-12 font-bold">
