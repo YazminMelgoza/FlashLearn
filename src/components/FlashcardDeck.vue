@@ -42,7 +42,7 @@ const currentFlashcard = computed(() => {
     <!--    Flashcard container-->
     <div
       v-if="currentFlashcard"
-      class="rounded-3xl absolute transform-[rotateX(30deg)] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[58%] w-10/12 h-5/6"
+      class="rounded-3xl absolute cursor-pointer transform-[rotateX(30deg)] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[58%] w-10/12 h-5/6"
       @click="toggleSide()"
     >
       <!--      frente-->
@@ -78,14 +78,12 @@ const currentFlashcard = computed(() => {
       </transition>
     </div>
     <!-- svg de navegacion -->
-    <div class="flex items-center justify-between w-full absolute top-1/3">
-      <button @click="previousFlashcard()">
-        <ArrowLeftCircleIcon class="w-16 h-16 text-accent-800" />
-      </button>
-      <button @click="nextFlashcard()">
-        <ArrowRightCircleIcon class="w-16 h-16 text-accent-800" />
-      </button>
-    </div>
+    <button class="absolute left-0 top-1/3" @click="previousFlashcard()">
+      <ArrowLeftCircleIcon class="w-16 h-16 text-accent-800" />
+    </button>
+    <button class="absolute right-0 top-1/3" @click="nextFlashcard()">
+      <ArrowRightCircleIcon class="w-16 h-16 text-accent-800" />
+    </button>
     <!--    Progress bar -->
     <div class="absolute bottom-0 left-1/2 w-10/12 -translate-x-1/2 rounded-2xl h-5 bg-gray-200">
       <div
