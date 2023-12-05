@@ -47,7 +47,7 @@ onMounted(async () => {
       const flashcards = await setRepository.getSetFlashcards(set.id)
       const now = new Date()
       for (const flashcard of flashcards) {
-        if (flashcard.lastReviewTimestamp == null) {
+        if (flashcard.nextReviewTimestamp == null) {
           continue
           // if the time  is in the future, skip
         } else if (flashcard.nextReviewTimestamp > now) {
