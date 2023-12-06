@@ -11,7 +11,7 @@ import PosibleRespuesta from './PosibleRespuesta.vue'
 const route = useRoute()
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
-
+let arreglo: number[] = []
 onMounted(async () => {
   console.log(route.params.id)
   try {
@@ -20,14 +20,26 @@ onMounted(async () => {
     console.error(error)
     alert('Error al cargar el set. Por favor, inténtelo de nuevo.')
   }
-
-  let arreglo: number[] = [] // Asigna un valor inicial vacío y añade una anotación de tipo number[]
+  function randomizar(){
+    let numero = Math.floor(Math.random() * flashcards.value.length) 
+    return numero
+  }
   // Usa un bucle for para agregar 4 elementos al arreglo
   for (let i = 0; i < 3; i++) {
     // Genera un número aleatorio del 0 al 9
-    let numero = Math.floor(Math.random() * flashcards.value.length)
-    // Usa el método push para agregar el número al final del arreglo
+    let numero = randomizar()
     arreglo.push(numero)
+    while(arreglo[i] == currentFlashcardIndex.value){
+      arreglo[i] = randomizar()
+    }
+    for(let x=0; x<3; x++){
+      if(x!=i){
+      while(arreglo[i] == arreglo[x]){
+        arreglo[i] = randomizar()
+      }
+      }
+    } 
+    // Usa el método push para agregar el número al final del arreglo
   }
   arreglo.push(currentFlashcardIndex.value)
 
@@ -53,6 +65,7 @@ function mezclar(arr: number[]) {
     intercambiar(arr, i, j)
   }
 }
+
 </script>
 
 <template>
@@ -131,10 +144,10 @@ function mezclar(arr: number[]) {
       </div>
     </div>
     <div class="flex flex-row h-[30%] w-full">
-      <PosibleRespuesta id="1" />
-      <PosibleRespuesta id="2" />
-      <PosibleRespuesta id="3" />
-      <PosibleRespuesta id="4" />
+      <PosibleRespuesta :index="arreglo[0]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" />
+      <PosibleRespuesta :index="arreglo[1]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex"/>
+      <PosibleRespuesta :index="arreglo[2]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex"/>
+      <PosibleRespuesta :index="arreglo[3]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex"/>
     </div>
   </div>
 </template>
