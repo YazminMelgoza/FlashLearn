@@ -15,8 +15,8 @@
           >
             Flashcards aprendidas este mes
           </div>
-          <div class="h-5/6">
-            <Line :data="chartData" :options="chartConfigOptions" />
+          <div class="h-[18rem] w-full">
+            <Line :data="chartData" class="w-full mx-auto" :options="chartConfigOptions" />
           </div>
         </div>
         <div class="h-2/5 w-11/12 flex ml-auto mr-auto justify-center flex-col items-center">
@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { HistoryRepository } from '@/repositories/HistoryRepository'
 import { onMounted } from 'vue'
 import {
@@ -67,33 +67,34 @@ const thisWeekTracker = ref({
   labels: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
   data: [false, false, false, false, false, false, false]
 })
-const chartData = ref({
-  labels: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
-  datasets: [
-    {
-      label: 'Flashcards aprendidas',
-      data: [0, 0, 0, 0, 0, 0, 0],
-      fill: false,
-      borderColor: '#4bc0c0'
-    }
-  ]
+const learnedFlashcards = ref({
+  labels: ['', '', '', '', '', '', ''],
+  data: [0, 0, 0, 0, 0, 0, 0]
 })
-
-const chartConfigOptions = ref({
-  type: 'line',
-  data: chartData.value,
-  options: {
-    responsive: true
+const chartData = computed(() => {
+  return {
+    labels: learnedFlashcards.value.labels,
+    datasets: [
+      {
+        label: 'Flashcards aprendidas',
+        data: learnedFlashcards.value.data,
+        fill: false,
+        borderColor: '#4bc0c0'
+      }
+    ]
   }
 })
+
+const chartConfigOptions = {
+  responsive: true
+}
 
 onMounted(async () => {
   try {
     thisWeekTracker.value = await historyRepo.getThisWeekTracker()
 
     const ChartHistory = await historyRepo.getChartData()
-    chartData.value.labels = ChartHistory.labels
-    chartData.value.datasets[0].data = ChartHistory.data
+    learnedFlashcards.value = ChartHistory
     console.log('chart history')
     console.log(ChartHistory)
   } catch (e) {

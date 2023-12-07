@@ -143,7 +143,7 @@ export class SetRepository {
         back: flashcard.back,
         lastReviewTimestamp: null,
         nextReviewTimestamp: now,
-        easePercentage: null
+        easePercentage: 1
       })
     }
     return docref.id

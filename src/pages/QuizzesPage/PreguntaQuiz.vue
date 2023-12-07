@@ -2,8 +2,6 @@
 import { useRoute } from 'vue-router'
 import { SetRepository } from '@/repositories/SetRepository'
 import { onMounted, ref, watch } from 'vue'
-import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
-import router from '@/router'
 import { computed } from 'vue'
 import type { Flashcard, Set } from '@/entities/Set'
 import HeaderTop from '@/components/HeaderTop.vue'
@@ -13,18 +11,17 @@ import QuizCompletado from './QuizCompletado.vue'
 const route = useRoute()
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
-const set_quiz = ref<Set>({})
+const set_quiz = ref<Set>()
 const flashcardscorrectas = ref<Flashcard[]>([])
 const flashcardsincorrectas = ref<Flashcard[]>([])
 const reiniciar = ref(false);
 const terminado = ref(false)
 async function sleep(ms: number): Promise<void> {
-    return new Promise(
-        (resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 console.log("quiz actual:")
 let arreglo: number[] = []
-const descubrir = ref(false);
+const descubrir = ref(false)
 onMounted(async () => {
   console.log(route.params.id)
   try {
@@ -35,8 +32,8 @@ onMounted(async () => {
     console.error(error)
     alert('Error al cargar el set. Por favor, inténtelo de nuevo.')
   }
-  function randomizar(){
-    let numero = Math.floor(Math.random() * flashcards.value.length) 
+  function randomizar() {
+    let numero = Math.floor(Math.random() * flashcards.value.length)
     return numero
   }
 
@@ -45,16 +42,16 @@ onMounted(async () => {
     // Genera un número aleatorio del 0 al 9
     let numero = randomizar()
     arreglo.push(numero)
-    while(arreglo[i] == currentFlashcardIndex.value){
+    while (arreglo[i] == currentFlashcardIndex.value) {
       arreglo[i] = randomizar()
     }
-    for(let x=0; x<3; x++){
-      if(x!=i){
-      while(arreglo[i] == arreglo[x]){
-        arreglo[i] = randomizar()
+    for (let x = 0; x < 3; x++) {
+      if (x != i) {
+        while (arreglo[i] == arreglo[x]) {
+          arreglo[i] = randomizar()
+        }
       }
-      }
-    } 
+    }
     // Usa el método push para agregar el número al final del arreglo
   }
   arreglo.push(currentFlashcardIndex.value)
@@ -113,11 +110,11 @@ function handleRespuestaCorrecta(correcto: boolean , active: boolean ) {
       }
     }
 
-function actualizarDescurbir(actualizar: boolean){
+function actualizarDescurbir(actualizar: boolean) {
   descubrir.value = actualizar
 }
 
-function reiniciarRespuestas(reinicio: boolean){
+function reiniciarRespuestas(reinicio: boolean) {
   reiniciar.value = reinicio
 }
 function nextQuestion() {
@@ -128,33 +125,33 @@ function nextQuestion() {
 }
 watch(currentFlashcardIndex, (newIndex: number) => {
   currentFlashcard = computed(() => {
-  return flashcards.value![newIndex]
-})
-arreglo = []
-function randomizar(){
-    let numero = Math.floor(Math.random() * flashcards.value.length) 
+    return flashcards.value![newIndex]
+  })
+  arreglo = []
+  function randomizar() {
+    let numero = Math.floor(Math.random() * flashcards.value.length)
     return numero
   }
-for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++) {
     // Genera un número aleatorio del 0 al 9
     let index = currentFlashcardIndex.value
     let numero = randomizar()
     arreglo[i] = numero
-    while(arreglo[i] == index){
-      console.log("mismo numero ")
+    while (arreglo[i] == index) {
+      console.log('mismo numero ')
       arreglo[i] = randomizar()
     }
-    for(let x=0; x<3; x++){
-      if(x!=i){
-      while(arreglo[i] == arreglo[x]){
-        arreglo[x] = randomizar()
-          while(arreglo[x] == index){
-          console.log("mismo numero ")
+    for (let x = 0; x < 3; x++) {
+      if (x != i) {
+        while (arreglo[i] == arreglo[x]) {
           arreglo[x] = randomizar()
+          while (arreglo[x] == index) {
+            console.log('mismo numero ')
+            arreglo[x] = randomizar()
+          }
+        }
+      }
     }
-      }
-      }
-    } 
     // Usa el método push para agregar el número al final del arreglo
   }
   arreglo.push(currentFlashcardIndex.value)
@@ -214,13 +211,21 @@ for (let i = 0; i < 3; i++) {
       <div
         class="relative w-full h-[90%] flex items-center flex-row bg-primary-barracolor rounded-3xl"
       >
-        <div class="absolute h-full flex flex-row bg-primary-botonañadir rounded-3xl" :style="{
-          width: (currentFlashcardIndex / flashcards.length) * 100 + '%'
-        }"></div>
         <div
-          class="absolute w-1/12 bg-primary-botonañadir h-[140%] rounded-xl shadow-2xl :" :style="{
-          marginLeft: currentFlashcardIndex == 0 ? 0 : ((currentFlashcardIndex / flashcards.length) * 100) -5 + '%'
-          }"></div>
+          class="absolute h-full flex flex-row bg-primary-botonañadir rounded-3xl"
+          :style="{
+            width: (currentFlashcardIndex / flashcards.length) * 100 + '%'
+          }"
+        ></div>
+        <div
+          class="absolute w-1/12 bg-primary-botonañadir h-[140%] rounded-xl shadow-2xl :"
+          :style="{
+            marginLeft:
+              currentFlashcardIndex == 0
+                ? 0
+                : (currentFlashcardIndex / flashcards.length) * 100 - 5 + '%'
+          }"
+        ></div>
       </div>
     </div>
     <div
@@ -249,7 +254,7 @@ for (let i = 0; i < 3; i++) {
       <div
         class="justify-end items-end flex mr-8 mb-8 text-2xl text-primary-bloques font-semibold font-sans-Poppins"
       >
-        {{ currentFlashcardIndex + 1}}/{{ flashcards.length }}
+        {{ currentFlashcardIndex + 1 }}/{{ flashcards.length }}
       </div>
     </div>
     <div class="flex flex-row h-[30%] w-full">
