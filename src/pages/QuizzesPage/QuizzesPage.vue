@@ -10,7 +10,7 @@ import { showError } from '@/helpers/showError'
 import { RouterLink } from 'vue-router'
 import router from '@/router'
 
-type Quiz = {
+export type Quiz = {
   id?: string
   title: string
   description: string

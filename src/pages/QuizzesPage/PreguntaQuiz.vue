@@ -8,9 +8,12 @@ import { computed } from 'vue'
 import type { Flashcard, Set } from '@/entities/Set'
 import HeaderTop from '@/components/HeaderTop.vue'
 import PosibleRespuesta from './PosibleRespuesta.vue'
+import type { Quiz } from './QuizzesPage.vue'
+
 const route = useRoute()
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
+const set_quiz = ref<Set>({})
 const flashcardscorrectas = ref<Flashcard[]>([])
 const flashcardsincorrectas = ref<Flashcard[]>([])
 const reiniciar = ref(false);
@@ -18,12 +21,23 @@ async function sleep(ms: number): Promise<void> {
     return new Promise(
         (resolve) => setTimeout(resolve, ms));
 }
+
+const props = defineProps<{
+  quiz: Quiz[]
+}>()
+
+const quiz_actual = ref<Quiz[]>({})
+console.log("quiz actual:")
+console.log(quiz_actual)
 let arreglo: number[] = []
 const descubrir = ref(false);
 onMounted(async () => {
   console.log(route.params.id)
   try {
     flashcards.value = await setRepository.getSetFlashcards(route.params.id)
+    set_quiz.value = await setRepository.getSet(route.params.id)
+    quiz_actual.value = await setRepository.getSet(route.params.id)
+    
   } catch (error) {
     console.error(error)
     alert('Error al cargar el set. Por favor, inténtelo de nuevo.')
@@ -32,6 +46,8 @@ onMounted(async () => {
     let numero = Math.floor(Math.random() * flashcards.value.length) 
     return numero
   }
+  console.log("quiz:")
+  console.log(quiz_actual.numberOfFlashcards)
   // Usa un bucle for para agregar 4 elementos al arreglo
   for (let i = 0; i < 3; i++) {
     // Genera un número aleatorio del 0 al 9
@@ -175,8 +191,8 @@ for (let i = 0; i < 3; i++) {
       </div>
     </div>
     <div class="w-full h-[10%] flex flex-row">
-      <div class="w-11/12 justify-start font-sans-Poppins text-stone-950 text-3xl font-semibold">
-        Examen de set de {Nombre_set}
+      <div class="w-11/12 justify-start font-sans-Poppins text-stone-950 text-3xl font-semibold" v-if="set_quiz">
+        Examen de set de {{ quiz_actual.title }}
       </div>
       <div class="justify-end font-sans-Poppins text text-stone-950 font-semibold text-3xl">
         Fácil
@@ -186,10 +202,13 @@ for (let i = 0; i < 3; i++) {
       <div
         class="relative w-full h-[90%] flex items-center flex-row bg-primary-barracolor rounded-3xl"
       >
-        <div class="absolute w-1/2 h-full flex flex-row bg-primary-botonañadir rounded-3xl"></div>
+        <div class="absolute h-full flex flex-row bg-primary-botonañadir rounded-3xl" :style="{
+          width: (currentFlashcardIndex / flashcards.length) * 100 + '%'
+        }"></div>
         <div
-          class="absolute ml-[45%] w-1/12 bg-primary-botonañadir h-[140%] rounded-xl shadow-2xl"
-        ></div>
+          class="absolute w-1/12 bg-primary-botonañadir h-[140%] rounded-xl shadow-2xl :" :style="{
+          marginLeft: currentFlashcardIndex == 0 ? 0 : ((currentFlashcardIndex / flashcards.length) * 100) -5 + '%'
+          }"></div>
       </div>
     </div>
     <div
@@ -218,7 +237,7 @@ for (let i = 0; i < 3; i++) {
       <div
         class="justify-end items-end flex mr-8 mb-8 text-2xl text-primary-bloques font-semibold font-sans-Poppins"
       >
-        11/12
+        {{ currentFlashcardIndex + 1}}/{{ flashcards.length }}
       </div>
     </div>
     <div class="flex flex-row h-[30%] w-full">
