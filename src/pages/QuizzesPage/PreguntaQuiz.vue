@@ -8,7 +8,7 @@ import { computed } from 'vue'
 import type { Flashcard, Set } from '@/entities/Set'
 import HeaderTop from '@/components/HeaderTop.vue'
 import PosibleRespuesta from './PosibleRespuesta.vue'
-import type { Quiz } from './QuizzesPage.vue'
+import QuizCompletado from './QuizCompletado.vue'
 
 const route = useRoute()
 const setRepository = new SetRepository()
@@ -17,18 +17,12 @@ const set_quiz = ref<Set>({})
 const flashcardscorrectas = ref<Flashcard[]>([])
 const flashcardsincorrectas = ref<Flashcard[]>([])
 const reiniciar = ref(false);
+const terminado = ref(false)
 async function sleep(ms: number): Promise<void> {
     return new Promise(
         (resolve) => setTimeout(resolve, ms));
 }
-
-const props = defineProps<{
-  quiz: Quiz[]
-}>()
-
-const quiz_actual = ref<Quiz[]>({})
 console.log("quiz actual:")
-console.log(quiz_actual)
 let arreglo: number[] = []
 const descubrir = ref(false);
 onMounted(async () => {
@@ -36,7 +30,6 @@ onMounted(async () => {
   try {
     flashcards.value = await setRepository.getSetFlashcards(route.params.id)
     set_quiz.value = await setRepository.getSet(route.params.id)
-    quiz_actual.value = await setRepository.getSet(route.params.id)
     
   } catch (error) {
     console.error(error)
@@ -46,8 +39,7 @@ onMounted(async () => {
     let numero = Math.floor(Math.random() * flashcards.value.length) 
     return numero
   }
-  console.log("quiz:")
-  console.log(quiz_actual.numberOfFlashcards)
+
   // Usa un bucle for para agregar 4 elementos al arreglo
   for (let i = 0; i < 3; i++) {
     // Genera un número aleatorio del 0 al 9
@@ -71,7 +63,6 @@ onMounted(async () => {
   // Muestra el arreglo en la consola
   console.log(arreglo)
 })
-
 const currentFlashcardIndex = ref(0)
 let currentFlashcard = computed(() => {
   return flashcards.value![currentFlashcardIndex.value]
@@ -89,6 +80,9 @@ function mezclar(arr: number[]) {
     intercambiar(arr, i, j)
   }
 }
+function terminar(){
+  terminado.value = true
+}
 function handleRespuestaIncorrecta(active: boolean) {
       // Handle the information of an incorrect answer, and you also have the 'active' value
       descubrir.value = !descubrir.value
@@ -97,16 +91,26 @@ function handleRespuestaIncorrecta(active: boolean) {
       active = !active
       flashcardsincorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
       console.log(flashcardsincorrectas.value)
-
+      if(currentFlashcardIndex.value+1!=flashcards.value.length){
       setTimeout(nextQuestion, 2000)
+      }
+      else{
+        setTimeout(terminar, 2000)
+      }
     }
+
 function handleRespuestaCorrecta(correcto: boolean , active: boolean ) {
       // Handle the information of a correct answer, and you have both 'correcto' and 'active' values
       console.log('Respuesta correcta:', correcto);
       console.log('Active value:', active);
       flashcardscorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
       // Perform additional actions if needed
+      if(currentFlashcardIndex.value+1!=flashcards.value.length){
       setTimeout(nextQuestion, 2000)
+      }
+      else{
+        setTimeout(terminar, 2000)
+      }
     }
 
 function actualizarDescurbir(actualizar: boolean){
@@ -119,9 +123,8 @@ function reiniciarRespuestas(reinicio: boolean){
 function nextQuestion() {
   reiniciar.value = true
   currentFlashcardIndex.value++
-  if (currentFlashcardIndex.value >= flashcards.value.length) {
-    currentFlashcardIndex.value = 0
-  }
+  console.log(currentFlashcardIndex.value)
+
 }
 watch(currentFlashcardIndex, (newIndex: number) => {
   currentFlashcard = computed(() => {
@@ -159,14 +162,23 @@ for (let i = 0; i < 3; i++) {
   mezclar(arreglo)
   // Muestra el arreglo en la consola
   console.log(arreglo)
+
+
+
 })
+
 </script>
 
 <template>
   <div class="h-full flex flex-col items-start justify-start">
+    <div v-if="terminado" class = "h-full w-full  ">
+      <HeaderTop class="h-[13%]" title="Completaste el Quiz!" />
+      <QuizCompletado :flashcardsincorrectas="flashcardsincorrectas" :set="set_quiz.id"/>
+    </div>
+    <div v-else class = "h-full w-full">
     <HeaderTop class="h-[13%]" title="Quizzes" />
-    <div class="flex flex-row h-1/12 w-full">
-      <RouterLink to="quizzes">
+    <div class="flex flex-row h-1/12 w-full" >
+      <RouterLink to="/quizzes">
         <svg
           class="flex justify-center mt-1 items-center"
           width="33"
@@ -192,7 +204,7 @@ for (let i = 0; i < 3; i++) {
     </div>
     <div class="w-full h-[10%] flex flex-row">
       <div class="w-11/12 justify-start font-sans-Poppins text-stone-950 text-3xl font-semibold" v-if="set_quiz">
-        Examen de set de {{ quiz_actual.title }}
+        Examen de set de {{ set_quiz.title }}
       </div>
       <div class="justify-end font-sans-Poppins text text-stone-950 font-semibold text-3xl">
         Fácil
@@ -246,6 +258,7 @@ for (let i = 0; i < 3; i++) {
       <PosibleRespuesta :index="arreglo[2]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
       <PosibleRespuesta :index="arreglo[3]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
     </div>
+  </div>
   </div>
 </template>
 
