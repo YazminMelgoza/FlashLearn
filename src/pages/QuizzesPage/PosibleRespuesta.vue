@@ -36,6 +36,10 @@ export default defineComponent({
     descubrir: {
       type: Boolean,
       required: true,
+    },
+    reiniciar: {
+      type: Boolean,
+      required: true,
     }
   },
   setup(props, { emit }) {
@@ -54,9 +58,21 @@ export default defineComponent({
         if(props.index == props.respuesta){
         active.value = !active.value;
         correcto.value = !correcto.value;
+        newDescubrir = !newDescubrir
+        emit('actualizar', newDescubrir)
       }
     }
 })
+
+watch(() => props.reiniciar, (reinicio) => {
+      if(reinicio){
+        active.value = true;
+        correcto.value = false;
+        reinicio = !reinicio
+        emit('reiniciar', reinicio)
+    }
+})
+
     function handleClick() {
       console.log(props.descubrir)
       if(props.index == props.respuesta){

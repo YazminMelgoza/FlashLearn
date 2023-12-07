@@ -13,7 +13,11 @@ const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
 const flashcardscorrectas = ref<Flashcard[]>([])
 const flashcardsincorrectas = ref<Flashcard[]>([])
-
+const reiniciar = ref(false);
+async function sleep(ms: number): Promise<void> {
+    return new Promise(
+        (resolve) => setTimeout(resolve, ms));
+}
 let arreglo: number[] = []
 const descubrir = ref(false);
 onMounted(async () => {
@@ -53,7 +57,7 @@ onMounted(async () => {
 })
 
 const currentFlashcardIndex = ref(0)
-const currentFlashcard = computed(() => {
+let currentFlashcard = computed(() => {
   return flashcards.value![currentFlashcardIndex.value]
 })
 console.log(currentFlashcard.value)
@@ -74,7 +78,11 @@ function handleRespuestaIncorrecta(active: boolean) {
       descubrir.value = !descubrir.value
       console.log(descubrir)
       console.log('Respuesta incorrecta. Active value:', active);
+      active = !active
       flashcardsincorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
+      console.log(flashcardsincorrectas.value)
+
+      setTimeout(nextQuestion, 2000)
     }
 function handleRespuestaCorrecta(correcto: boolean , active: boolean ) {
       // Handle the information of a correct answer, and you have both 'correcto' and 'active' values
@@ -82,17 +90,60 @@ function handleRespuestaCorrecta(correcto: boolean , active: boolean ) {
       console.log('Active value:', active);
       flashcardscorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
       // Perform additional actions if needed
+      setTimeout(nextQuestion, 2000)
     }
+
+function actualizarDescurbir(actualizar: boolean){
+  descubrir.value = actualizar
+}
+
+function reiniciarRespuestas(reinicio: boolean){
+  reiniciar.value = reinicio
+}
 function nextQuestion() {
+  reiniciar.value = true
   currentFlashcardIndex.value++
   if (currentFlashcardIndex.value >= flashcards.value.length) {
     currentFlashcardIndex.value = 0
   }
 }
 watch(currentFlashcardIndex, (newIndex: number) => {
-  currentFlashcard.value = flashcards.value![newIndex]
+  currentFlashcard = computed(() => {
+  return flashcards.value![newIndex]
 })
+arreglo = []
+function randomizar(){
+    let numero = Math.floor(Math.random() * flashcards.value.length) 
+    return numero
+  }
+for (let i = 0; i < 3; i++) {
+    // Genera un número aleatorio del 0 al 9
+    let index = currentFlashcardIndex.value
+    let numero = randomizar()
+    arreglo[i] = numero
+    while(arreglo[i] == index){
+      console.log("mismo numero ")
+      arreglo[i] = randomizar()
+    }
+    for(let x=0; x<3; x++){
+      if(x!=i){
+      while(arreglo[i] == arreglo[x]){
+        arreglo[x] = randomizar()
+          while(arreglo[x] == index){
+          console.log("mismo numero ")
+          arreglo[x] = randomizar()
+    }
+      }
+      }
+    } 
+    // Usa el método push para agregar el número al final del arreglo
+  }
+  arreglo.push(currentFlashcardIndex.value)
 
+  mezclar(arreglo)
+  // Muestra el arreglo en la consola
+  console.log(arreglo)
+})
 </script>
 
 <template>
@@ -171,10 +222,10 @@ watch(currentFlashcardIndex, (newIndex: number) => {
       </div>
     </div>
     <div class="flex flex-row h-[30%] w-full">
-      <PosibleRespuesta :index="arreglo[0]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
-      <PosibleRespuesta :index="arreglo[1]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
-      <PosibleRespuesta :index="arreglo[2]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
-      <PosibleRespuesta :index="arreglo[3]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
+      <PosibleRespuesta :index="arreglo[0]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
+      <PosibleRespuesta :index="arreglo[1]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
+      <PosibleRespuesta :index="arreglo[2]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
+      <PosibleRespuesta :index="arreglo[3]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
     </div>
   </div>
 </template>
