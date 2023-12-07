@@ -2,7 +2,7 @@
     <div v-if="reinicio" class ="h-full w-full ">
         <PreguntaQuizVue/>
     </div>
-    <div v-else>
+    <div v-else class = "h-full w-full">
     <div class=" h-[20%] w-full flex flex-row justify-center items-center">
         <div class="w-[45%] h-full mr-10 rounded-2xl flex flex-row items-center justify-center bg-primary-barracolor text-lg font-semibold font-sans-Poppins ">
             👏 Obtuviste 17 acierttos  
