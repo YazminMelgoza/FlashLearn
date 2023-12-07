@@ -133,9 +133,11 @@ export class HistoryRepository {
       }
     })
 
+    // return the labels and data reversed
+
     return {
-      labels: labels,
-      data: data
+      labels: labels.reverse(),
+      data: data.reverse()
     }
   }
 

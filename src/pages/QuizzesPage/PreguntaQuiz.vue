@@ -2,8 +2,6 @@
 import { useRoute } from 'vue-router'
 import { SetRepository } from '@/repositories/SetRepository'
 import { onMounted, ref, watch } from 'vue'
-import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
-import router from '@/router'
 import { computed } from 'vue'
 import type { Flashcard, Set } from '@/entities/Set'
 import HeaderTop from '@/components/HeaderTop.vue'
@@ -13,56 +11,54 @@ import type { Quiz } from './QuizzesPage.vue'
 const route = useRoute()
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
-const set_quiz = ref<Set>({})
+const set_quiz = ref<Set>()
 const flashcardscorrectas = ref<Flashcard[]>([])
 const flashcardsincorrectas = ref<Flashcard[]>([])
-const reiniciar = ref(false);
+const reiniciar = ref(false)
 async function sleep(ms: number): Promise<void> {
-    return new Promise(
-        (resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 const props = defineProps<{
   quiz: Quiz[]
 }>()
 
-const quiz_actual = ref<Quiz[]>({})
-console.log("quiz actual:")
+const quiz_actual = ref<Quiz[]>()
+console.log('quiz actual:')
 console.log(quiz_actual)
 let arreglo: number[] = []
-const descubrir = ref(false);
+const descubrir = ref(false)
 onMounted(async () => {
   console.log(route.params.id)
   try {
     flashcards.value = await setRepository.getSetFlashcards(route.params.id)
     set_quiz.value = await setRepository.getSet(route.params.id)
     quiz_actual.value = await setRepository.getSet(route.params.id)
-    
   } catch (error) {
     console.error(error)
     alert('Error al cargar el set. Por favor, inténtelo de nuevo.')
   }
-  function randomizar(){
-    let numero = Math.floor(Math.random() * flashcards.value.length) 
+  function randomizar() {
+    let numero = Math.floor(Math.random() * flashcards.value.length)
     return numero
   }
-  console.log("quiz:")
+  console.log('quiz:')
   console.log(quiz_actual.numberOfFlashcards)
   // Usa un bucle for para agregar 4 elementos al arreglo
   for (let i = 0; i < 3; i++) {
     // Genera un número aleatorio del 0 al 9
     let numero = randomizar()
     arreglo.push(numero)
-    while(arreglo[i] == currentFlashcardIndex.value){
+    while (arreglo[i] == currentFlashcardIndex.value) {
       arreglo[i] = randomizar()
     }
-    for(let x=0; x<3; x++){
-      if(x!=i){
-      while(arreglo[i] == arreglo[x]){
-        arreglo[i] = randomizar()
+    for (let x = 0; x < 3; x++) {
+      if (x != i) {
+        while (arreglo[i] == arreglo[x]) {
+          arreglo[i] = randomizar()
+        }
       }
-      }
-    } 
+    }
     // Usa el método push para agregar el número al final del arreglo
   }
   arreglo.push(currentFlashcardIndex.value)
@@ -90,30 +86,30 @@ function mezclar(arr: number[]) {
   }
 }
 function handleRespuestaIncorrecta(active: boolean) {
-      // Handle the information of an incorrect answer, and you also have the 'active' value
-      descubrir.value = !descubrir.value
-      console.log(descubrir)
-      console.log('Respuesta incorrecta. Active value:', active);
-      active = !active
-      flashcardsincorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
-      console.log(flashcardsincorrectas.value)
+  // Handle the information of an incorrect answer, and you also have the 'active' value
+  descubrir.value = !descubrir.value
+  console.log(descubrir)
+  console.log('Respuesta incorrecta. Active value:', active)
+  active = !active
+  flashcardsincorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
+  console.log(flashcardsincorrectas.value)
 
-      setTimeout(nextQuestion, 2000)
-    }
-function handleRespuestaCorrecta(correcto: boolean , active: boolean ) {
-      // Handle the information of a correct answer, and you have both 'correcto' and 'active' values
-      console.log('Respuesta correcta:', correcto);
-      console.log('Active value:', active);
-      flashcardscorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
-      // Perform additional actions if needed
-      setTimeout(nextQuestion, 2000)
-    }
+  setTimeout(nextQuestion, 2000)
+}
+function handleRespuestaCorrecta(correcto: boolean, active: boolean) {
+  // Handle the information of a correct answer, and you have both 'correcto' and 'active' values
+  console.log('Respuesta correcta:', correcto)
+  console.log('Active value:', active)
+  flashcardscorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
+  // Perform additional actions if needed
+  setTimeout(nextQuestion, 2000)
+}
 
-function actualizarDescurbir(actualizar: boolean){
+function actualizarDescurbir(actualizar: boolean) {
   descubrir.value = actualizar
 }
 
-function reiniciarRespuestas(reinicio: boolean){
+function reiniciarRespuestas(reinicio: boolean) {
   reiniciar.value = reinicio
 }
 function nextQuestion() {
@@ -125,33 +121,33 @@ function nextQuestion() {
 }
 watch(currentFlashcardIndex, (newIndex: number) => {
   currentFlashcard = computed(() => {
-  return flashcards.value![newIndex]
-})
-arreglo = []
-function randomizar(){
-    let numero = Math.floor(Math.random() * flashcards.value.length) 
+    return flashcards.value![newIndex]
+  })
+  arreglo = []
+  function randomizar() {
+    let numero = Math.floor(Math.random() * flashcards.value.length)
     return numero
   }
-for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++) {
     // Genera un número aleatorio del 0 al 9
     let index = currentFlashcardIndex.value
     let numero = randomizar()
     arreglo[i] = numero
-    while(arreglo[i] == index){
-      console.log("mismo numero ")
+    while (arreglo[i] == index) {
+      console.log('mismo numero ')
       arreglo[i] = randomizar()
     }
-    for(let x=0; x<3; x++){
-      if(x!=i){
-      while(arreglo[i] == arreglo[x]){
-        arreglo[x] = randomizar()
-          while(arreglo[x] == index){
-          console.log("mismo numero ")
+    for (let x = 0; x < 3; x++) {
+      if (x != i) {
+        while (arreglo[i] == arreglo[x]) {
           arreglo[x] = randomizar()
+          while (arreglo[x] == index) {
+            console.log('mismo numero ')
+            arreglo[x] = randomizar()
+          }
+        }
+      }
     }
-      }
-      }
-    } 
     // Usa el método push para agregar el número al final del arreglo
   }
   arreglo.push(currentFlashcardIndex.value)
@@ -191,7 +187,10 @@ for (let i = 0; i < 3; i++) {
       </div>
     </div>
     <div class="w-full h-[10%] flex flex-row">
-      <div class="w-11/12 justify-start font-sans-Poppins text-stone-950 text-3xl font-semibold" v-if="set_quiz">
+      <div
+        class="w-11/12 justify-start font-sans-Poppins text-stone-950 text-3xl font-semibold"
+        v-if="set_quiz"
+      >
         Examen de set de {{ quiz_actual.title }}
       </div>
       <div class="justify-end font-sans-Poppins text text-stone-950 font-semibold text-3xl">
@@ -202,13 +201,21 @@ for (let i = 0; i < 3; i++) {
       <div
         class="relative w-full h-[90%] flex items-center flex-row bg-primary-barracolor rounded-3xl"
       >
-        <div class="absolute h-full flex flex-row bg-primary-botonañadir rounded-3xl" :style="{
-          width: (currentFlashcardIndex / flashcards.length) * 100 + '%'
-        }"></div>
         <div
-          class="absolute w-1/12 bg-primary-botonañadir h-[140%] rounded-xl shadow-2xl :" :style="{
-          marginLeft: currentFlashcardIndex == 0 ? 0 : ((currentFlashcardIndex / flashcards.length) * 100) -5 + '%'
-          }"></div>
+          class="absolute h-full flex flex-row bg-primary-botonañadir rounded-3xl"
+          :style="{
+            width: (currentFlashcardIndex / flashcards.length) * 100 + '%'
+          }"
+        ></div>
+        <div
+          class="absolute w-1/12 bg-primary-botonañadir h-[140%] rounded-xl shadow-2xl :"
+          :style="{
+            marginLeft:
+              currentFlashcardIndex == 0
+                ? 0
+                : (currentFlashcardIndex / flashcards.length) * 100 - 5 + '%'
+          }"
+        ></div>
       </div>
     </div>
     <div
@@ -237,14 +244,54 @@ for (let i = 0; i < 3; i++) {
       <div
         class="justify-end items-end flex mr-8 mb-8 text-2xl text-primary-bloques font-semibold font-sans-Poppins"
       >
-        {{ currentFlashcardIndex + 1}}/{{ flashcards.length }}
+        {{ currentFlashcardIndex + 1 }}/{{ flashcards.length }}
       </div>
     </div>
     <div class="flex flex-row h-[30%] w-full">
-      <PosibleRespuesta :index="arreglo[0]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
-      <PosibleRespuesta :index="arreglo[1]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
-      <PosibleRespuesta :index="arreglo[2]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
-      <PosibleRespuesta :index="arreglo[3]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" :reiniciar="reiniciar" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta" @actualizar = "actualizarDescurbir" @reiniciar = "reiniciarRespuestas"/>
+      <PosibleRespuesta
+        :index="arreglo[0]"
+        :flashcards="flashcards"
+        :respuesta="currentFlashcardIndex"
+        :descubrir="descubrir"
+        :reiniciar="reiniciar"
+        @respuestaIncorrecta="handleRespuestaIncorrecta"
+        @respuestaCorrecta="handleRespuestaCorrecta"
+        @actualizar="actualizarDescurbir"
+        @reiniciar="reiniciarRespuestas"
+      />
+      <PosibleRespuesta
+        :index="arreglo[1]"
+        :flashcards="flashcards"
+        :respuesta="currentFlashcardIndex"
+        :descubrir="descubrir"
+        :reiniciar="reiniciar"
+        @respuestaIncorrecta="handleRespuestaIncorrecta"
+        @respuestaCorrecta="handleRespuestaCorrecta"
+        @actualizar="actualizarDescurbir"
+        @reiniciar="reiniciarRespuestas"
+      />
+      <PosibleRespuesta
+        :index="arreglo[2]"
+        :flashcards="flashcards"
+        :respuesta="currentFlashcardIndex"
+        :descubrir="descubrir"
+        :reiniciar="reiniciar"
+        @respuestaIncorrecta="handleRespuestaIncorrecta"
+        @respuestaCorrecta="handleRespuestaCorrecta"
+        @actualizar="actualizarDescurbir"
+        @reiniciar="reiniciarRespuestas"
+      />
+      <PosibleRespuesta
+        :index="arreglo[3]"
+        :flashcards="flashcards"
+        :respuesta="currentFlashcardIndex"
+        :descubrir="descubrir"
+        :reiniciar="reiniciar"
+        @respuestaIncorrecta="handleRespuestaIncorrecta"
+        @respuestaCorrecta="handleRespuestaCorrecta"
+        @actualizar="actualizarDescurbir"
+        @reiniciar="reiniciarRespuestas"
+      />
     </div>
   </div>
 </template>
