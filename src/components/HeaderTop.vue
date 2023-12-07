@@ -35,7 +35,7 @@
               stroke="#B600BA"
             />
           </svg>
-          {{ userPoints }} 150 puntos
+          {{ userStore.points }} puntos
         </div>
         <div class="flex flex-row h-auto font-semibold gap-4 items-center">
           <!--          Circulito-->
@@ -43,9 +43,9 @@
           <!--          Nombre de usuario-->
           <div class="text-lg text-primary-100 flex flex-col">
             <span>
-              {{ username }}
+              {{ userStore.name }}
             </span>
-            <span class="text-teal-500"> Nivel 1 </span>
+            <span class="text-teal-500"> Nivel {{ userLevel }} </span>
           </div>
         </div>
       </div>
@@ -57,21 +57,21 @@
 import { useUserStore } from '@/stores/userStore'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
-import { UserRepository } from '@/repositories/UserRepository'
+import { computed } from 'vue'
 
-const props = defineProps(['userPoints', 'title', 'subtitle', 'userPoints', 'userName']) // Añade las props necesarias
+const props = defineProps(['title', 'subtitle']) // Añade las props necesarias
 
 const userStore = useUserStore()
-const username = ref('')
-const userRepository = new UserRepository()
 
+const userLevel = computed(() => {
+  return Math.floor(userStore.points / 100) + 1
+})
 onMounted(() => {
   // Si no hay datos en el estado, cárgalos desde firestore
   if (!userStore.isLoaded) {
     console.log('Usuario no cargado')
   } else {
     console.log('Usuario cargado')
-    username.value = userStore.name
   }
 })
 </script>

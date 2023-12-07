@@ -8,7 +8,7 @@ export class SetRepository {
   public userId: string
   constructor() {
     const userStore = useUserStore()
-    this.userId = userStore.id
+    this.userId = userStore.uid
   }
 
   // get all flashcards from an specific set
@@ -87,13 +87,13 @@ export class SetRepository {
     const querySnapshot = await getDocs(collection(db, 'sets'))
     let mostRecentSet: Set = {
       id: '',
-      title: '',
-      course: '',
-      description: '',
+      title: 'No tienes sets',
+      course: 'Crea un set',
+      description: 'para que aparezca aquí',
       userId: '',
       isPublic: false,
       lastReviewTimestamp: null,
-      imageUrl: ''
+      imageUrl: '/src/assets/defaultSetImage.png'
     }
     querySnapshot.forEach((doc) => {
       const setData = doc.data()
@@ -123,6 +123,7 @@ export class SetRepository {
   // create set
   public async createSet(set: Set, flashcards: Flashcard[]): Promise<string> {
     console.log('creating set to firestore')
+    const now = new Date()
     const docref = await addDoc(collection(db, 'sets'), {
       title: set.title,
       course: set.course,
@@ -141,7 +142,7 @@ export class SetRepository {
         front: flashcard.front,
         back: flashcard.back,
         lastReviewTimestamp: null,
-        nextReviewTimestamp: null,
+        nextReviewTimestamp: now,
         easePercentage: null
       })
     }

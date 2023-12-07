@@ -1,7 +1,7 @@
 <template>
   <div class="w-min mb-6">
     <div class="w-64 aspect-[0.85] h-full cursor-pointer relative scale-75 group">
-      <RouterLink :to="'/flashcards/' + set.id">
+      <RouterLink :to="set.id ? '/flashcards/' + set.id : '/creacionfc'">
         <div class="card rotate-12 group-hover:-rotate-12"></div>
         <div class="card -rotate-12 group-hover:rotate-12"></div>
         <div
