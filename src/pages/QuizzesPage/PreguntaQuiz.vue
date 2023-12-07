@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { SetRepository } from '@/repositories/SetRepository'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
 import router from '@/router'
 import { computed } from 'vue'
@@ -11,7 +11,11 @@ import PosibleRespuesta from './PosibleRespuesta.vue'
 const route = useRoute()
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
+const flashcardscorrectas = ref<Flashcard[]>([])
+const flashcardsincorrectas = ref<Flashcard[]>([])
+
 let arreglo: number[] = []
+const descubrir = ref(false);
 onMounted(async () => {
   console.log(route.params.id)
   try {
@@ -52,7 +56,7 @@ const currentFlashcardIndex = ref(0)
 const currentFlashcard = computed(() => {
   return flashcards.value![currentFlashcardIndex.value]
 })
-
+console.log(currentFlashcard.value)
 function intercambiar(arr: number[], i: number, j: number) {
   const temp = arr[i]
   arr[i] = arr[j]
@@ -65,6 +69,29 @@ function mezclar(arr: number[]) {
     intercambiar(arr, i, j)
   }
 }
+function handleRespuestaIncorrecta(active: boolean) {
+      // Handle the information of an incorrect answer, and you also have the 'active' value
+      descubrir.value = !descubrir.value
+      console.log(descubrir)
+      console.log('Respuesta incorrecta. Active value:', active);
+      flashcardsincorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
+    }
+function handleRespuestaCorrecta(correcto: boolean , active: boolean ) {
+      // Handle the information of a correct answer, and you have both 'correcto' and 'active' values
+      console.log('Respuesta correcta:', correcto);
+      console.log('Active value:', active);
+      flashcardscorrectas.value.push(flashcards.value![currentFlashcardIndex.value])
+      // Perform additional actions if needed
+    }
+function nextQuestion() {
+  currentFlashcardIndex.value++
+  if (currentFlashcardIndex.value >= flashcards.value.length) {
+    currentFlashcardIndex.value = 0
+  }
+}
+watch(currentFlashcardIndex, (newIndex: number) => {
+  currentFlashcard.value = flashcards.value![newIndex]
+})
 
 </script>
 
@@ -144,10 +171,10 @@ function mezclar(arr: number[]) {
       </div>
     </div>
     <div class="flex flex-row h-[30%] w-full">
-      <PosibleRespuesta :index="arreglo[0]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" />
-      <PosibleRespuesta :index="arreglo[1]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex"/>
-      <PosibleRespuesta :index="arreglo[2]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex"/>
-      <PosibleRespuesta :index="arreglo[3]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex"/>
+      <PosibleRespuesta :index="arreglo[0]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
+      <PosibleRespuesta :index="arreglo[1]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
+      <PosibleRespuesta :index="arreglo[2]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
+      <PosibleRespuesta :index="arreglo[3]" :flashcards="flashcards" :respuesta ="currentFlashcardIndex" :descubrir="descubrir" @respuestaIncorrecta="handleRespuestaIncorrecta" @respuestaCorrecta="handleRespuestaCorrecta"/>
     </div>
   </div>
 </template>

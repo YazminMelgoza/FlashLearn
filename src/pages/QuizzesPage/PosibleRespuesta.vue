@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import type { Flashcard } from '@/entities/Set';
 import { defineProps, computed } from 'vue';
 
@@ -33,8 +33,12 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    descubrir: {
+      type: Boolean,
+      required: true,
+    }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const active = ref(true);
     const correcto = ref(false);
 
@@ -43,11 +47,27 @@ export default defineComponent({
       // Check if flashcard is defined before accessing 'back'
       return flashcardactual ? flashcardactual.back.trim() : '';
     });
-
-    function handleClick() {
-      active.value = !active.value;
-      if(props.index == props.respuesta){
+    console.log("ha sido contestado" + props.descubrir)
+    watch(() => props.descubrir, (newDescubrir) => {
+      if(newDescubrir){
+        console.log("ya clickeado")
+        if(props.index == props.respuesta){
+        active.value = !active.value;
         correcto.value = !correcto.value;
+      }
+    }
+})
+    function handleClick() {
+      console.log(props.descubrir)
+      if(props.index == props.respuesta){
+        active.value = !active.value;
+        emit('respuestaCorrecta', true, active.value);
+
+        correcto.value = !correcto.value;
+      }
+      else{
+        active.value = !active.value;
+        emit('respuestaIncorrecta', active.value)
       }
       if (correcto.value) {
         console.log('Correcto!');
