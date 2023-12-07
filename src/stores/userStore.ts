@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', {
       email: ref(''),
       points: ref(0),
       id: ref(''),
+      uid: ref(''),
       level: ref(1),
       isLoaded: ref(false),
       lastActivity: ref(null),

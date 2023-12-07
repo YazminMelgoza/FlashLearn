@@ -107,7 +107,7 @@ const uploadImage = async () => {
   }
   try {
     const userStore = useUserStore()
-    const fileRef = storageRef(storage, 'images/' + userStore.id + '/' + selectedFile.value.name)
+    const fileRef = storageRef(storage, 'images/' + userStore.uid + '/' + selectedFile.value.name)
     const uploadSnapshot = await uploadBytes(fileRef, selectedFile.value)
     imageUrl.value = await getDownloadURL(uploadSnapshot.ref)
   } catch (error) {
@@ -148,7 +148,7 @@ const uploadImage = async () => {
     ></textarea>
 
     <!--    on off button to make public the set in tailwind rounded switch appearance -->
-    <div class="flex items-center justify-start mb-4">
+    <div class="flex items-center hidden justify-start mb-4">
       <span class="mr-2">¿Hacer público?</span>
       <label class="switch">
         <input v-model="isPublic" type="checkbox" />
