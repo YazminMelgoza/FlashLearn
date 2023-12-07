@@ -31,21 +31,51 @@
           </textodegrafica>
           <contenidografica class="h-5/6"> </contenidografica>
         </grafica>
-        <miactividad
-          class="h-2/5 w-11/12 flex ml-auto mr-auto justify-center flex-col items-center"
-        >
-          <textomiactividad
+        <div class="h-2/5 w-11/12 flex ml-auto mr-auto justify-center flex-col items-center">
+          <div
             class="h-1/6 flex text-lg items-start text-start justify-start mr-auto text-primary-100 font-semibold"
           >
-            Mi actvidad
-          </textomiactividad>
-          <contenidomiactividad class="h-5/6 w-auto"> </contenidomiactividad>
-        </miactividad>
+            Mi actividad
+          </div>
+          <div class="flex flex-row-reverse w-auto">
+            <!--            a circle for each day in weektracker-->
+            <div
+              :key="index"
+              v-for="(label, index) in thisWeekTracker.labels"
+              class="w-20 h-20 border-primary-500 border-4 rounded-full flex items-center justify-center text-xl font-semibold"
+              :class="{
+                'text-white bg-primary-500': thisWeekTracker.data[index],
+                'text-primary-500 bg-white': !thisWeekTracker.data[index]
+              }"
+            >
+              {{ label }}
+            </div>
+          </div>
+        </div>
       </cuerpomiprogreso>
     </miprogreso>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { HistoryRepository } from '@/repositories/HistoryRepository'
+import { onMounted } from 'vue'
+
+const historyRepo = new HistoryRepository()
+const thisWeekTracker = ref({
+  labels: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
+  data: [false, false, false, false, false, false, false]
+})
+
+onMounted(async () => {
+  try {
+    thisWeekTracker.value = await historyRepo.getThisWeekTracker()
+  } catch (e) {
+    console.log(e)
+    alert('Error al cargar el progreso')
+  }
+})
+</script>
 
 <style scoped></style>
