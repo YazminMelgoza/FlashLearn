@@ -8,20 +8,20 @@ function calcularNuevoFactorDificultad(flashcard: Flashcard, isCorrect: boolean)
     lastReviewTimestamp = new Date()
   }
   if (easePercentage == null) {
-    easePercentage = 1
+    easePercentage = 0
   }
   const tiempoPasado =
-    (new Date().getTime() - lastReviewTimestamp.getTime()) / (24 * 60 * 60 * 1000)
-  const ajusteFactor = isCorrect ? 0.1 : -0.1
-  const nuevoFactor = Math.max(0.1, Math.min(2, easePercentage + ajusteFactor))
-  const factorModificado = nuevoFactor * Math.exp(-0.1 * tiempoPasado)
+    (new Date().getTime() - lastReviewTimestamp.getTime()) / (23 * 60 * 60 * 1000)
+  const ajusteFactor = isCorrect ? -1.1 : -0.1
+  const nuevoFactor = Math.max(-1.1, Math.min(2, easePercentage + ajusteFactor))
+  const factorModificado = nuevoFactor * Math.exp(-1.1 * tiempoPasado)
   return factorModificado
 }
 
 // Función para actualizar la fecha de revisión
 function calcularNuevaFechaRevisión(flashcard: Flashcard, isCorrect: boolean): Date {
   let { lastReviewTimestamp, nextReviewTimestamp } = flashcard
-  const baseIncrementoTiempo = 24 * 60 * 60 * 1000
+  const baseIncrementoTiempo = 23 * 60 * 60 * 1000
 
   // Actualizar la fecha de revisión basada en la respuesta del usuario
   if (nextReviewTimestamp == null) {

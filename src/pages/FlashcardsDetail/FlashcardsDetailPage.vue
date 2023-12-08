@@ -60,7 +60,10 @@ onMounted(async () => {
 
     <div class="w-full flex items-center">
       <FlashcardDeck :flashcards="flashcards"></FlashcardDeck>
-      <button class="text-gray-400 w-min text-lg font-bold rounded-xl p-4">
+      <RouterLink
+        :to="'/quizzes/' + route.params.id"
+        class="text-gray-400 w-min text-lg font-bold rounded-xl p-4"
+      >
         <span class="w-fit flex mb-4 justify-center">
           <svg
             class="translate-x-1/2 scale-150"
@@ -88,7 +91,7 @@ onMounted(async () => {
           </svg>
         </span>
         Tomar Quiz
-      </button>
+      </RouterLink>
     </div>
     <!--    Boton de tomar quiz-->
   </div>

@@ -8,11 +8,12 @@
       <div
         class="w-[45%] h-full mr-10 rounded-2xl flex flex-row items-center justify-center bg-primary-barracolor text-lg font-semibold font-sans-Poppins"
       >
-        👏 Obtuviste {{ correctas }} aciertos
+        👏 Obtuviste {{ flashcardscorrectas.length }} aciertos
       </div>
       <div
-        class="w-[45%] h-full rounded-2xl flex flex-row items-center justify-center bg-primary-barracolor text-lg font-semibold font-sans-Poppins">
-        ✨ Obtuviste {{ puntos }} puntos
+        class="w-[45%] h-full rounded-2xl flex flex-row items-center justify-center bg-primary-barracolor text-lg font-semibold font-sans-Poppins"
+      >
+        ✨ Obtuviste {{ points }} puntos
       </div>
     </div>
     <div
@@ -51,6 +52,7 @@ const props = defineProps<{
   set: string
   flashcardsincorrectas: Flashcard[]
   flashcardscorrectas: Flashcard[]
+  points: number
 }>()
 
 const emit = defineEmits<{

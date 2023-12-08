@@ -1,12 +1,9 @@
 <template>
-  <!--<RouterLink
-    :to="`/quizzes/${quiz.id}`" 
-    class="flex-row rounded-xl w-[45%] mt-[3%] p-8 bg-primary-bloques flex flex-wrap justify-between min-h-[15rem] h-full"
-  >-->
   <RouterLink
-    :to="'/quizzes/' + quiz.id" :quiz="quiz"
+    :to="'/quizzes/' + quiz.id"
+    :quiz="quiz"
     class="flex-row rounded-xl w-[45%] mt-[3%] p-8 bg-primary-bloques flex flex-wrap justify-between min-h-[15rem] h-full"
-    >
+  >
     <div class="w-[23.9rem] flex flex-col">
       <div class="text-3xl text-primary-100 font-semibold font-sans-Poppins">{{ quiz.title }}</div>
       <div class="w-9/12 mt-2 flex h-1/6 flex-row">
@@ -39,7 +36,7 @@
     <div class="w-40 flex justify-center align-middle items-center">
       <!--      circulito-->
       <circulito
-        :class="color"
+        :class="'bg-' + color"
         class="w-[80px] h-[80px] absolute rounded-full flex justify-center items-center"
       >
         <svg
@@ -59,8 +56,8 @@
         <svg class="w-full h-full" viewBox="0 0 100 100">
           <!-- Background circle -->
           <circle
-            class="text-gray-200 stroke-current"
-            :class="color"
+            class="text-gray-200 bg-gray-500 stroke-current"
+            :class="'bg-' + color"
             stroke-width="16"
             cx="50"
             cy="50"
@@ -70,7 +67,7 @@
           <!-- Progress circle -->
           <circle
             class="progress-ring__circle stroke-current text-primary-progreso1"
-            :class="color"
+            :class="'text-' + color"
             stroke-width="16"
             stroke-linecap="round"
             cx="50"
@@ -94,17 +91,49 @@ const progressPercentage = computed(() => {
   return (props.quiz.progress / props.quiz.numberOfFlashcards) * 100
 })
 
+// logic to change the color of the progress bar
 const color = computed(() => {
-  if (progressPercentage.value == 0) {
-    return 'bg-primary-400'
+  if (progressPercentage.value < 25) {
+    return 'primary-progreso1'
   } else if (progressPercentage.value < 50) {
-    return 'bg-primary-progreso1'
+    return 'primary-progreso2'
   } else if (progressPercentage.value < 75) {
-    return 'bg-primary-progreso2'
+    return 'primary-progreso3'
   } else {
-    return 'bg-primary-progreso3'
+    return 'primary-progreso4'
   }
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.bg-primary-progreso1 {
+  background-color: #e06465;
+}
+.bg-primary-progreso2 {
+  background-color: #e3c947;
+}
+.bg-primary-progreso3 {
+  background-color: #94de63;
+}
+.bg-primary-progreso4 {
+  background-color: #98b5f8;
+}
+.text-primary-progreso1 {
+  color: #e06465;
+}
+.text-primary-progreso2 {
+  color: #e3c947;
+}
+.text-primary-progreso3 {
+  color: #94de63;
+}
+.text-primary-progreso4 {
+  color: #98b5f8;
+}
+</style>
