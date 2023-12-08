@@ -1,5 +1,5 @@
 import { db } from '../services/firebase'
-import { collection, getDocs, addDoc, where, query } from 'firebase/firestore'
+import { collection, getDocs, addDoc, where, query, updateDoc } from 'firebase/firestore'
 import { useUserStore } from '../stores/userStore'
 
 type History = {

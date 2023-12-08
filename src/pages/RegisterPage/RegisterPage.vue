@@ -40,7 +40,9 @@ async function register() {
       uid: userCredential.user.uid,
       username: username.value,
       level: 1,
-      points: 0
+      points: 0,
+      streak: 0,
+      lastActivity: new Date()
     })
   } catch (error) {
     errorMessage.value = error.message
@@ -91,7 +93,6 @@ async function register() {
       <button @click="register" class="w-full mb-2" type="submit">
         Registrarse con Correo Electronico
       </button>
-      <button class="block bg-white w-full rounded-lg py-3">Registrarse con Google</button>
     </div>
     <p>
       Ya tienes una cuenta?
