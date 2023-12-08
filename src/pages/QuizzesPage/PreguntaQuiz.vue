@@ -140,9 +140,6 @@ watch(terminado, async (terminado: boolean) => {
       console.log(e)
       alert('no se han podido actualizar las flashcards')
     }
-    // TODO actualizar flashcards incorrectas (si existen)
-    // TODO actualizar fecha de revisión de flashcards
-    // TODO actualizar factor de dificultad de flashcards
     // TODO guardar el historial del usuario (si es necesario)
   }
 })

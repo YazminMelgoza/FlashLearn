@@ -50,6 +50,21 @@ export class UserRepository {
       const userData = doc.data()
       // Cargar usuario al estado actual
       if (userData.uid === user.uid) {
+        let streakDuration = userData.streak
+        // if the streak is from two days ago, reset it
+        if (userData.streak > 0 && userData.lastActivity !== null) {
+          const today = new Date()
+          const lastActivity = userData.lastActivity.toDate()
+          const diffTime = Math.abs(today.getTime() - lastActivity.getTime())
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+          if (diffDays > 2) {
+            streakDuration = 0
+            // reset streak on db using firebase 9
+            updateDoc(doc.ref, {
+              streak: 0
+            })
+          }
+        }
         userStore.name = userData.username
         userStore.email = userData.email
         userStore.points = userData.points
@@ -57,7 +72,7 @@ export class UserRepository {
         userStore.level = userData.level
         userStore.id = doc.id
         userStore.uid = userData.uid
-        userStore.streakDuration = userData.streak
+        userStore.streakDuration = streakDuration
         userStore.lastActivity = userData.lastActivity
       }
     })

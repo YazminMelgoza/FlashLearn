@@ -98,7 +98,6 @@ onMounted(async () => {
       <TermQuiz />
       <TermQuiz />
     </div>
-    <PlayQuizPage />
   </div>
 </template>
 
