@@ -16,12 +16,21 @@
         ✨ Obtuviste {{ points }} puntos
       </div>
     </div>
+    <div v-if="noesconder">
     <div
       class="h-[10%] w-full flex flex-row justify-center items-center font-semibold font-sans-Poppins text-xl"
     >
       Conceptos que tienes que repasar
     </div>
     <FlashcardDeck class="h-1/2 w-full" :flashcards="flashcards"></FlashcardDeck>
+    </div>
+    <div v-else>
+      <div
+      class="h-[10%] mt-[10%] mb-[20%] w-full flex flex-row justify-center items-center font-semibold font-sans-Poppins text-xl"
+    >
+      Felicidades, se contesto correctamente el quiz!
+    </div>
+    </div>
     <div class="h-10 w-full text-xl flex flex-row font-bold font-sans-Poppins text-purple-700">
       <div class="flex justify-start items-center w-[30%]" @click="HandleClick()">
         Tomar de nuevo
@@ -66,6 +75,9 @@ flashcards_cor.value = props.flashcardscorrectas
 const correctas = flashcards_cor.value.length
 flashcards.value = props.flashcardsincorrectas
 const flashcards_actuales = route.params.id
+const noesconder = ref(true)
+
+
 onMounted(async () => {
 try {
   for (let flashcard of flashcards_cor.value) {
@@ -81,6 +93,9 @@ try {
 }
   puntos.value = Math.round(puntos.value)
   console.log(puntos.value)
+  if(flashcards.value.length == 0){
+    noesconder.value = false
+}
   } catch (error) {
     console.error(error)
     alert('Error al cargar el set. Por favor, inténtelo de nuevo.')
