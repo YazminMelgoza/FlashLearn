@@ -10,9 +10,11 @@ import QuizCompletado from './QuizCompletado.vue'
 import Preloader from '@/components/VPreloader.vue'
 import { UserRepository } from '@/repositories/UserRepository'
 import { QuizRepository } from '@/repositories/QuizRepository'
+import { useUserStore } from '@/stores/userStore'
 
 const route = useRoute()
 
+const userStore = useUserStore()
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
 const set_quiz = ref<Set>()
@@ -137,8 +139,27 @@ watch(terminado, async (terminado: boolean) => {
       alert('no se han podido actualizar las flashcards')
     }
     // TODO guardar el historial del usuario (si es necesario)
+    await checkAndSaveStreak()
   }
 })
+
+async function checkAndSaveStreak() {
+  // if the users last activity was NOT today, save the streak
+  // if the users last activity was today, do nothing
+  if (userStore.lastActivity !== null) {
+    console.log('last activity:', userStore.lastActivity)
+    let lA = new Date(userStore.lastActivity)
+    if (lA.getDate() !== new Date().getDate()) {
+      // increase streak on the database
+      try {
+        await userRepository.addStreak()
+      } catch (e) {
+        console.log(e)
+        alert('no se ha podido actualizar la racha')
+      }
+    }
+  }
+}
 function handleRespuestaCorrecta(correcto: boolean, active: boolean) {
   // Handle the information of a correct answer, and you have both 'correcto' and 'active' values
   console.log('Respuesta correcta:', correcto)

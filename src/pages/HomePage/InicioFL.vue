@@ -1,14 +1,23 @@
 <template>
-    <div v-if="userStore.isLoaded" class="flex flex-col h-full">
-      <HeaderTop :title="`Bienvenido, ${username}!`" :subtitle="`Has estudiado por ${streakDuration } dias consecutivos`"/>
-      <div class="flex flex-row h-full mb-5">
-        <SetReciente />
-        <MiProgreso />
-      </div>
+  <div v-if="userStore.isLoaded" class="flex flex-col h-full">
+    <HeaderTop
+      :title="`Buen día, ${username}!`"
+      :subtitle="`Has estudiado por ${streakDuration} día${
+        streakDuration != 1 ? 's' : ''
+      } consecutivo${streakDuration != 1 ? 's' : ''}`"
+    />
+    <div class="flex flex-row h-full mb-5">
+      <SetReciente />
+      <MiProgreso />
     </div>
-    <div v-else class="w-full h-full items-center justify-center flex">
-      <img class="" src="https://camaradecomerciogdl1.com/camaraaccess/static/img/loading2.gif" alt="">
-    </div>
+  </div>
+  <div v-else class="w-full h-full items-center justify-center flex">
+    <img
+      class=""
+      src="https://camaradecomerciogdl1.com/camaraaccess/static/img/loading2.gif"
+      alt=""
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -19,10 +28,8 @@ import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
 const userStore = useUserStore()
 
-
 const username = ref(userStore.name)
 const streakDuration = ref(userStore.streakDuration)
-
 </script>
 
 <style scoped></style>

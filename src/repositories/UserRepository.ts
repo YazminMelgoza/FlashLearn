@@ -24,22 +24,20 @@ export class UserRepository {
     userStore.points = newPoints
   }
 
-  // add streak to the user
+  // add streak to the user, if the document is not found, it will be created
   public async addStreak(): Promise<void> {
-    const userStore = useUserStore()
+    // calc new streak from store
+    const newStreak = userStore.streakDuration + 1
+    // update on db
     const userRef = doc(db, 'users', userStore.id)
     await updateDoc(userRef, {
-      streak: userStore.streakDuration + 1
+      lastActivity: new Date(),
+      streak: newStreak
     })
+    // update on store
+    userStore.streakDuration = newStreak
   }
-
-  public async resetStreak(): Promise<void> {
-    const userStore = useUserStore()
-    const userRef = doc(db, 'users', userStore.id)
-    await updateDoc(userRef, {
-      streak: 0
-    })
-  }
+  //
 
   public async loadUser(user: any): Promise<void> {
     const userStore = useUserStore()
