@@ -129,7 +129,6 @@ watch(terminado, async (terminado: boolean) => {
       alert('no se han podido actualizar los puntos')
     }
     // TODO actualizar flashcards correctas (si existen)
-    historyRepository.addCorrectFlashcard(flashcardscorrectas.value.length)
     // in a for of loop, update the flashcards that were answered correctly
     try {
       for (const flashcard of flashcardscorrectas.value) {
@@ -143,6 +142,15 @@ watch(terminado, async (terminado: boolean) => {
       alert('no se han podido actualizar las flashcards')
     }
     // TODO guardar el historial del usuario (si es necesario)
+    if (flashcardscorrectas.value.length > 0) {
+      try {
+        await historyRepository.addCorrectFlashcard(flashcardscorrectas.value.length)
+      } catch (e) {
+        console.log(e)
+        alert('no se ha podido actualizar el historial')
+      }
+    }
+
     await checkAndSaveStreak()
   }
 })

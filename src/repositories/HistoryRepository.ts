@@ -20,10 +20,13 @@ export class HistoryRepository {
     const userStore = useUserStore()
     const historyRef = collection(db, 'users', this.userId, 'history')
     // check if there is a history document for today
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
     const querySnapshot = await getDocs(
       query(
         collection(db, 'users', this.userId, 'history'),
-        where('date', '==', new Date().toISOString().split('T')[0])
+        where('date', '==', today.toISOString().split('T')[0])
       )
     )
     // if there is a history document for today
@@ -42,7 +45,7 @@ export class HistoryRepository {
     else {
       console.log('no history document for today, creating one')
       const historyData: History = {
-        date: new Date().toISOString().split('T')[0],
+        date: today.toISOString().split('T')[0],
         correctFlashcardsCount: numberOfFlashcards
       }
       await addDoc(historyRef, historyData)

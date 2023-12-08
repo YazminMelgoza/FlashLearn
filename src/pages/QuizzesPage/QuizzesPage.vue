@@ -84,20 +84,23 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col items-start justify-start">
     <HeaderTop title="Quizzes" />
-    <div class="w-full justify-start font-sans-Poppins text-stone-950 text-2xl h-[10%] font-bold">
+    <div
+      v-if="quizzesInProgress.length > 0"
+      class="w-full justify-start font-sans-Poppins text-stone-950 text-2xl h-[10%] font-bold"
+    >
       En progreso
     </div>
-    <div class="w-full flex flex-wrap justify-around items-start align-start flex-row">
+    <div v-if="quizzesInProgress.length > 0" class="w-full flex flex-wrap flex-row">
       <IndivQuiz v-for="quiz in quizzesInProgress" :quiz="quiz" />
     </div>
     <div
       v-if="quizzesFinished.length > 0"
-      class="flex w-full justify-start text-stone-950 text-4xl ml-[10%] pt-12 font-bold"
+      class="flex w-full justify-start text-stone-950 text-2xl pt-12 font-bold"
     >
       Terminados
     </div>
-    <div v-if="quizzesFinished.length > 0" class="ml-[10%] flex w-full h-1/5 flex-row">
-      <TermQuiz :quiz="quiz" v-for="quiz in quizzesFinished" />
+    <div v-if="quizzesFinished.length > 0" class="flex flex-wrap w-full h-1/5 flex-row">
+      <IndivQuiz :quiz="quiz" v-for="quiz in quizzesFinished" />
     </div>
   </div>
 </template>
