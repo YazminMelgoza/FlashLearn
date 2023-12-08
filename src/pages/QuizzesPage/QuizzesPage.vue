@@ -45,15 +45,24 @@ onMounted(async () => {
 
       // calcular el progreso del quiz conforme sus flashcards
       const flashcards = await setRepository.getSetFlashcards(set.id)
+      console.log('FLASHCARDS')
+      console.log(flashcards)
       const now = new Date()
       for (const flashcard of flashcards) {
+        console.log(typeof flashcard.nextReviewTimestamp)
         if (flashcard.nextReviewTimestamp == null) {
+          console.log('flashcard.nextReviewTimestamp == null')
+          console.log(flashcard)
           continue
           // if the time  is in the future, skip
         } else if (flashcard.nextReviewTimestamp > now) {
+          console.log('flashcard.nextReviewTimestamp > now')
+          console.log(flashcard.nextReviewTimestamp)
+          console.log(flashcard)
           quiz.progress += 1
         }
       }
+      console.log(quiz)
       quiz.numberOfFlashcards = flashcards.length
       if (quiz.progress == quiz.numberOfFlashcards) {
         quizzesFinished.value.push(quiz)

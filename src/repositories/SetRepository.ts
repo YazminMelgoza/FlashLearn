@@ -17,12 +17,18 @@ export class SetRepository {
     const flashcards: Flashcard[] = []
     querySnapshot.forEach((doc) => {
       const flashcardData = doc.data()
+      const nextReview = flashcardData.nextReviewTimestamp
+        ? flashcardData.nextReviewTimestamp.toDate()
+        : null
+      const lastReview = flashcardData.lastReviewTimestamp
+        ? flashcardData.lastReviewTimestamp.toDate()
+        : null
       const flashcard: Flashcard = {
         id: doc.id,
         front: flashcardData.front,
         back: flashcardData.back,
-        lastReviewTimestamp: flashcardData.lastReviewTimestamp,
-        nextReviewTimestamp: flashcardData.nextReviewTimestamp,
+        lastReviewTimestamp: lastReview,
+        nextReviewTimestamp: nextReview,
         easePercentage: flashcardData.easePercentage
       }
       flashcards.push(flashcard)

@@ -7,6 +7,9 @@ import type { Flashcard, Set } from '@/entities/Set'
 import HeaderTop from '@/components/HeaderTop.vue'
 import PosibleRespuesta from './PosibleRespuesta.vue'
 import QuizCompletado from './QuizCompletado.vue'
+import Preloader from '@/components/VPreloader.vue'
+import { UserRepository } from '@/repositories/UserRepository'
+import { QuizRepository } from '@/repositories/QuizRepository'
 
 const route = useRoute()
 const setRepository = new SetRepository()
@@ -16,20 +19,31 @@ const flashcardscorrectas = ref<Flashcard[]>([])
 const flashcardsincorrectas = ref<Flashcard[]>([])
 const reiniciar = ref(false)
 const terminado = ref(false)
+const fetchStatus = ref<'loading' | 'loaded' | 'error'>('loading')
+const userRepository = new UserRepository()
+const quizRepository = new QuizRepository()
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 console.log('quiz actual:')
 let arreglo: number[] = []
 const descubrir = ref(false)
+
 onMounted(async () => {
   console.log(route.params.id)
+  console.log('mounting')
   try {
+    console.log('fetching')
     flashcards.value = await setRepository.getSetFlashcards(route.params.id)
+    console.log(flashcards.value)
     set_quiz.value = await setRepository.getSet(route.params.id)
+    console.log(set_quiz.value)
+    console.log(fetchStatus)
+    fetchStatus.value = 'loaded'
   } catch (error) {
     console.error(error)
     alert('Error al cargar el set. Por favor, inténtelo de nuevo.')
+    fetchStatus.value = 'error'
   }
   function randomizar() {
     let numero = Math.floor(Math.random() * flashcards.value.length)
@@ -54,11 +68,11 @@ onMounted(async () => {
     // Usa el método push para agregar el número al final del arreglo
   }
   arreglo.push(currentFlashcardIndex.value)
-
   mezclar(arreglo)
   // Muestra el arreglo en la consola
   console.log(arreglo)
 })
+
 const currentFlashcardIndex = ref(0)
 let currentFlashcard = computed(() => {
   return flashcards.value![currentFlashcardIndex.value]
@@ -95,12 +109,32 @@ function handleRespuestaIncorrecta(active: boolean) {
 }
 
 // watch when the quiz ends and perform additional actions if needed
-watch(terminado, (terminado: boolean) => {
+watch(terminado, async (terminado: boolean) => {
   if (terminado) {
     // perform additional actions if needed
     console.log('Quiz terminado')
     // TODO calcular puntos
+    const puntos = calcularPuntos(flashcardscorrectas.value)
+    console.log('Puntos:', puntos)
+    try {
+      await userRepository.addPoints(puntos)
+    } catch (e) {
+      console.log(e)
+      alert('no se han podido actualizar los puntos')
+    }
     // TODO actualizar flashcards correctas (si existen)
+    // in a for of loop, update the flashcards that were answered correctly
+    try {
+      for (const flashcard of flashcardscorrectas.value) {
+        await quizRepository.updateFlashcard(flashcard, true, route.params.id)
+      }
+      for (const flashcard of flashcardsincorrectas.value) {
+        await quizRepository.updateFlashcard(flashcard, false, route.params.id)
+      }
+    } catch (e) {
+      console.log(e)
+      alert('no se han podido actualizar las flashcards')
+    }
     // TODO actualizar flashcards incorrectas (si existen)
     // TODO actualizar fecha de revisión de flashcards
     // TODO actualizar factor de dificultad de flashcards
@@ -177,15 +211,30 @@ function reiniciarQuiz() {
   flashcardsincorrectas.value = []
   console.log('reiniciando')
 }
+
+function calcularPuntos(flashcardscorrectas: Flashcard[]) {
+  let puntos = 0
+  for (let i = 0; i < flashcardscorrectas.length; i++) {
+    if (flashcardscorrectas[i].easePercentage === null) {
+      puntos += 3
+    } else {
+      puntos += 3 / flashcardscorrectas[i].easePercentage
+    }
+  }
+  return Math.floor(puntos)
+}
 </script>
 
 <template>
-  <div class="h-full flex flex-col items-start justify-start">
+  <Preloader v-if="fetchStatus == 'loading'" />
+  <div v-else class="h-full flex flex-col items-start justify-start">
     <div v-if="terminado" class="h-full w-full">
       <HeaderTop class="h-[13%]" title="Completaste el Quiz!" />
       <QuizCompletado
         @reinicio="reiniciarQuiz"
+        :flashcardscorrectas="flashcardscorrectas"
         :flashcardsincorrectas="flashcardsincorrectas"
+        :points="calcularPuntos(flashcardscorrectas)"
         :set="set_quiz.id"
       />
     </div>

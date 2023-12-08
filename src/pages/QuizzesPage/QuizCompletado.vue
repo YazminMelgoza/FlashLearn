@@ -7,12 +7,12 @@
       <div
         class="w-[45%] h-full mr-10 rounded-2xl flex flex-row items-center justify-center bg-primary-barracolor text-lg font-semibold font-sans-Poppins"
       >
-        👏 Obtuviste 17 acierttos
+        👏 Obtuviste {{ flashcardscorrectas.length }} aciertos
       </div>
       <div
         class="w-[45%] h-full rounded-2xl flex flex-row items-center justify-center bg-primary-barracolor text-lg font-semibold font-sans-Poppins"
       >
-        ✨ Obtuviste 450 puntos
+        ✨ Obtuviste {{ points }} puntos
       </div>
     </div>
     <div
@@ -47,6 +47,8 @@ const route = useRoute()
 const props = defineProps<{
   set: string
   flashcardsincorrectas: Flashcard[]
+  flashcardscorrectas: Flashcard[]
+  points: number
 }>()
 
 const emit = defineEmits<{
