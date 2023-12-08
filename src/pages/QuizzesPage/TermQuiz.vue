@@ -3,7 +3,7 @@
     <div class="flex-row rounded-xl mt-[3%] bg-primary-bloques flex justify-start w-full h-full">
       <div class="ml-7 w-3/4 mt-2 flex flex-col">
         <div class="text-lg text-primary-100 font-semibold font-sans-Poppins">
-          Revolucion Mexicana
+          {{ quiz.title }}
         </div>
         <div class="w-9/12 mt-2 flex h-1/6 flex-row">
           <div class="w-1/12 flex justify-center items-center">
@@ -23,20 +23,21 @@
           <div
             class="font-semibold w-9/12 flex h-1/6 text-m font-sans-Poppins justify-normal items-start text-start flex-col"
           >
-            Asignatura
+            {{ quiz.course }}
           </div>
         </div>
         <div
           class="mt-3 font-semibold w-full font-sans-Poppins justify-normal text-left items-start flex-colw-full flex h-full flex-col text-xs"
         >
-          La Revolución mexicana fue un conflicto armado, iniciado el 20 de noviembre de 1910 con un
-          levantamiento encabezado por Francisco I. Madero
+          {{ quiz.description }}
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps(['quiz'])
+</script>
 
 <style scoped></style>

@@ -152,7 +152,9 @@ async function checkAndSaveStreak() {
   // if the users last activity was today, do nothing
   if (userStore.lastActivity !== null) {
     console.log('last activity:', userStore.lastActivity)
-    let lA = new Date(userStore.lastActivity)
+    //
+    // convert lastActivity timestamp to a date
+    const lA = userStore.lastActivity.toDate()
     if (lA.getDate() !== new Date().getDate()) {
       // increase streak on the database
       try {

@@ -90,13 +90,14 @@ onMounted(async () => {
     <div class="w-full flex flex-wrap justify-around items-start align-start flex-row">
       <IndivQuiz v-for="quiz in quizzesInProgress" :quiz="quiz" />
     </div>
-    <div class="flex w-full justify-start text-stone-950 text-4xl ml-[10%] pt-12 font-bold">
+    <div
+      v-if="quizzesFinished.length > 0"
+      class="flex w-full justify-start text-stone-950 text-4xl ml-[10%] pt-12 font-bold"
+    >
       Terminados
     </div>
-    <div class="ml-[10%] flex w-full h-1/5 flex-row">
-      <TermQuiz />
-      <TermQuiz />
-      <TermQuiz />
+    <div v-if="quizzesFinished.length > 0" class="ml-[10%] flex w-full h-1/5 flex-row">
+      <TermQuiz :quiz="quiz" v-for="quiz in quizzesFinished" />
     </div>
   </div>
 </template>
