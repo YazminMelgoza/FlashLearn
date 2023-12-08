@@ -9,6 +9,7 @@ import PosibleRespuesta from './PosibleRespuesta.vue'
 import QuizCompletado from './QuizCompletado.vue'
 
 const route = useRoute()
+
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
 const set_quiz = ref<Set>()
@@ -185,6 +186,7 @@ function reiniciarQuiz() {
       <HeaderTop class="h-[13%]" title="Completaste el Quiz!" />
       <QuizCompletado
         @reinicio="reiniciarQuiz"
+        :flashcardscorrectas="flashcardscorrectas"
         :flashcardsincorrectas="flashcardsincorrectas"
         :set="set_quiz.id"
       />
