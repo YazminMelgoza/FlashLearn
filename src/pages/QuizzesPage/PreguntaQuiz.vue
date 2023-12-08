@@ -10,6 +10,7 @@ import QuizCompletado from './QuizCompletado.vue'
 import Preloader from '@/components/VPreloader.vue'
 import { UserRepository } from '@/repositories/UserRepository'
 import { QuizRepository } from '@/repositories/QuizRepository'
+import { HistoryRepository } from '@/repositories/HistoryRepository'
 
 const route = useRoute()
 
@@ -23,6 +24,8 @@ const terminado = ref(false)
 const fetchStatus = ref<'loading' | 'loaded' | 'error'>('loading')
 const userRepository = new UserRepository()
 const quizRepository = new QuizRepository()
+const historyRepository = new HistoryRepository()
+
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
@@ -124,6 +127,7 @@ watch(terminado, async (terminado: boolean) => {
       alert('no se han podido actualizar los puntos')
     }
     // TODO actualizar flashcards correctas (si existen)
+      historyRepository.addCorrectFlashcard(flashcardscorrectas.value.length)
     // in a for of loop, update the flashcards that were answered correctly
     try {
       for (const flashcard of flashcardscorrectas.value) {
