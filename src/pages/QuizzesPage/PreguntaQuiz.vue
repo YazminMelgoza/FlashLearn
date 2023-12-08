@@ -12,6 +12,7 @@ import { UserRepository } from '@/repositories/UserRepository'
 import { QuizRepository } from '@/repositories/QuizRepository'
 
 const route = useRoute()
+
 const setRepository = new SetRepository()
 const flashcards = ref<Flashcard[]>([])
 const set_quiz = ref<Set>()
