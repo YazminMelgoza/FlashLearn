@@ -34,8 +34,7 @@ async function register() {
     userStore.level = 1
     userStore.points = 0
     // Add user to Firestore
-    await router.push('/inicio')
-    await addDoc(collection(db, 'users'), {
+    const newUserDoc = await addDoc(collection(db, 'users'), {
       email: userCredential.user.email,
       uid: userCredential.user.uid,
       username: username.value,
@@ -44,6 +43,8 @@ async function register() {
       streak: 0,
       lastActivity: new Date()
     })
+    userStore.id = newUserDoc.id
+    router.push('/inicio')
   } catch (error) {
     errorMessage.value = error.message
     // delete Firebase: Error from errorMessage
