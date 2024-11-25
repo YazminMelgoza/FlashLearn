@@ -3,10 +3,10 @@ import { auth, db } from '@/services/firebase'
 import { useUserStore } from '@/stores/userStore'
 import { collection, getDocs, updateDoc, getDoc, doc } from 'firebase/firestore'
 
-const userStore = useUserStore()
-
 // using firebase 9 Important
 export class UserRepository {
+  private userStore = useUserStore()
+
   public async login(email: string, password: string): Promise<void> {
     await signInWithEmailAndPassword(auth, email, password)
   }
@@ -14,28 +14,28 @@ export class UserRepository {
   // add points to the user
   public async addPoints(points: number): Promise<void> {
     // calc new points  from store
-    const newPoints = userStore.points + points
+    const newPoints = this.userStore.points + points
     // update on db
-    const userRef = doc(db, 'users', userStore.id)
+    const userRef = doc(db, 'users', this.userStore.id)
     await updateDoc(userRef, {
       points: newPoints
     })
     // update on store
-    userStore.points = newPoints
+    this.userStore.points = newPoints
   }
 
   // add streak to the user, if the document is not found, it will be created
   public async addStreak(): Promise<void> {
     // calc new streak from store
-    const newStreak = userStore.streakDuration + 1
+    const newStreak = this.userStore.streakDuration + 1
     // update on db
-    const userRef = doc(db, 'users', userStore.id)
+    const userRef = doc(db, 'users', this.userStore.id)
     await updateDoc(userRef, {
       lastActivity: new Date(),
       streak: newStreak
     })
     // update on store
-    userStore.streakDuration = newStreak
+    this.userStore.streakDuration = newStreak
   }
   //
 

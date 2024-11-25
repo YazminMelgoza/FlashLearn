@@ -33,6 +33,7 @@ async function register() {
     userStore.isLoaded = true
     userStore.level = 1
     userStore.points = 0
+    userStore.setLocalStorageUser()
     // Add user to Firestore
     const newUserDoc = await addDoc(collection(db, 'users'), {
       email: userCredential.user.email,

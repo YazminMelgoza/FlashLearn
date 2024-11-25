@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores/userStore'
 import { createRouter, createWebHistory } from 'vue-router'
 
 let paginaActiva = 'inicio' // Define la variable fuera del router
@@ -46,8 +47,8 @@ const router = createRouter({
       component: () => import('../pages/QuizzesPage/QuizzesPage.vue')
     },
     {
-      path:'/quizzes/:id',
-      name:'quiz-detail',
+      path: '/quizzes/:id',
+      name: 'quiz-detail',
       component: () => import('../pages/QuizzesPage/PreguntaQuiz.vue')
     }
   ]
@@ -59,6 +60,19 @@ router.beforeEach((to, from, next) => {
     paginaActiva = to.name // Actualiza la variable directamente
   }
   next()
+})
+
+// We are taking the uuid as a auth guard pivot. Thats the only property that i am storing in local storage
+router.beforeEach((to, from, next) => {
+  const user = useUserStore()
+
+  if (to.name === 'login') next(true)
+
+  if (!user.uid || (user.uid && user.uid.trim() === '')) {
+    next({ name: 'login' })
+  }
+
+  next(true)
 })
 
 export default router

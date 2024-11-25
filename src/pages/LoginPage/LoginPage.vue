@@ -4,31 +4,35 @@ import { RouterLink } from 'vue-router'
 import { auth } from '@/services/firebase'
 import router from '@/router'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import {UserRepository} from "@/repositories/UserRepository";
+import { UserRepository } from '@/repositories/UserRepository'
+import { useUserStore } from '@/stores/userStore'
 
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 const afterLoginClick = ref(false)
 
+const userStore = useUserStore()
+
 function hasEmptyValues() {
   return email.value === '' || password.value === ''
 }
+
 async function login() {
   afterLoginClick.value = true
-  if (hasEmptyValues()) return;
+  if (hasEmptyValues()) return
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
     const user = userCredential.user
     // Buscar usuario en Firestore
     const userRepo = new UserRepository()
     await userRepo.loadUser(user)
-    await router.push('/inicio')
+    userStore.setLocalStorageUser()
+    router.push('/inicio')
   } catch (error) {
     if (error.message) {
       errorMessage.value = error.message
     }
-
   }
 }
 </script>
