@@ -16,6 +16,13 @@ function logoutFromFirebase() {
       const userStore = useUserStore()
       userStore.name = ''
       userStore.email = ''
+      userStore.points = 0
+      userStore.id = ''
+      userStore.uid = ''
+      userStore.level = 1
+      userStore.isLoaded = false
+      userStore.lastActivity = null
+      userStore.streakDuration = 0
       router.push('/login')
     })
     .catch((error) => {
