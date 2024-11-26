@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full">
+  <div v-if="userStore.isLoaded" class="flex flex-col h-full">
     <HeaderTop
       :title="`Buen día, ${username}!`"
       :subtitle="`Has estudiado por ${streakDuration} día${
@@ -10,6 +10,13 @@
       <SetReciente />
       <MiProgreso />
     </div>
+  </div>
+  <div v-else class="w-full h-full items-center justify-center flex">
+    <img
+      class=""
+      src="https://camaradecomerciogdl1.com/camaraaccess/static/img/loading2.gif"
+      alt=""
+    />
   </div>
 </template>
 
